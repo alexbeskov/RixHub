@@ -2,11 +2,13 @@ import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import '../styles/globals.css'
 import Providers from './providers'
-import Navbar from '@/components/Navbar'
+import { CursorProvider } from './cursor-context'
+import Sidebar from '@/components/Sidebar'
+import Header from '@/components/Header'
 import CursorGlow from '@/components/CursorGlow'
 
 export const metadata: Metadata = {
-  title: 'RixyHub — Всё для вайбкодера в одном месте',
+  title: 'RixHub — Всё для вайбкодера в одном месте',
   description: 'AI Tools, Docs, Services, Prompts, Free Steel',
 }
 
@@ -15,11 +17,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ru" suppressHydrationWarning>
       <body className={`${GeistSans.variable} font-sans antialiased`}>
         <Providers>
-          <CursorGlow />
-          <Navbar />
-          <main className="pt-14">
-            {children}
-          </main>
+          <CursorProvider>
+            <CursorGlow />
+            <Sidebar />
+            <div className="lg:ml-56 min-h-screen flex flex-col">
+              <Header />
+              <main className="flex-1">
+                {children}
+              </main>
+            </div>
+          </CursorProvider>
         </Providers>
       </body>
     </html>

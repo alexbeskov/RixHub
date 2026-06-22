@@ -7,17 +7,49 @@
   --foreground: #e5e5e5;
   --accent: #ffffff;
   --border: #1f1f1f;
-  --card: #0a0a0a;
+  --card: #111111;
+  --muted: #2a2a2a;
   --glow-color: rgba(255, 255, 255, 0.04);
 }
 
-.light {
+[data-theme="red"] {
+  --background: #0a0a0a;
+  --foreground: #e5e5e5;
+  --accent: #ff4444;
+  --border: #2a1a1a;
+  --card: #111111;
+  --muted: #2a1a1a;
+  --glow-color: rgba(255, 68, 68, 0.04);
+}
+
+[data-theme="teal"] {
+  --background: #0a0a0a;
+  --foreground: #e5e5e5;
+  --accent: #00d4aa;
+  --border: #1a2a2a;
+  --card: #111111;
+  --muted: #1a2a2a;
+  --glow-color: rgba(0, 212, 170, 0.04);
+}
+
+[data-theme="light"] {
   --background: #f8f8f8;
   --foreground: #111111;
   --accent: #000000;
   --border: #e5e5e5;
-  --card: #f8f8f8;
+  --card: #ffffff;
+  --muted: #f0f0f0;
   --glow-color: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="blue"] {
+  --background: #0a0a0a;
+  --foreground: #e5e5e5;
+  --accent: #4488ff;
+  --border: #1a1a2a;
+  --card: #111111;
+  --muted: #1a1a2a;
+  --glow-color: rgba(68, 136, 255, 0.04);
 }
 
 * {

@@ -1,13 +1,17 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useCursor } from '@/app/cursor-context'
 
 export default function CursorGlow() {
+  const { enabled } = useCursor()
   const glowRef = useRef<HTMLDivElement>(null)
   const pos = useRef({ x: 0, y: 0 })
   const target = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
+    if (!enabled) return
+
     const handleMouseMove = (e: MouseEvent) => {
       target.current.x = e.clientX
       target.current.y = e.clientY
@@ -34,7 +38,9 @@ export default function CursorGlow() {
       window.removeEventListener('mousemove', handleMouseMove)
       cancelAnimationFrame(raf)
     }
-  }, [])
+  }, [enabled])
+
+  if (!enabled) return null
 
   return (
     <div
