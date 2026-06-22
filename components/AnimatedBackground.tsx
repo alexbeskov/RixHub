@@ -46,7 +46,6 @@ export default function AnimatedBackground() {
     const animate = () => {
       ctx.clearRect(0, 0, width, height)
 
-      // Update positions
       for (const dot of dots) {
         dot.x += dot.vx
         dot.y += dot.vy
@@ -55,7 +54,6 @@ export default function AnimatedBackground() {
         if (dot.y < 0 || dot.y > height) dot.vy *= -1
       }
 
-      // Draw connections
       for (let i = 0; i < dots.length; i++) {
         for (let j = i + 1; j < dots.length; j++) {
           const dx = dots[i].x - dots[j].x
@@ -74,7 +72,6 @@ export default function AnimatedBackground() {
         }
       }
 
-      // Draw dots
       for (const dot of dots) {
         ctx.beginPath()
         ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2)
@@ -106,9 +103,6 @@ export default function AnimatedBackground() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{
-        background: 'radial-gradient(ellipse at 50% 0%, #0d0d1a 0%, #050508 70%)',
-      }}
     />
   )
 }

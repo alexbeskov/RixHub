@@ -84,11 +84,11 @@ function TypewriterText({ text }: { text: string }) {
 
 export default function HomePage() {
   return (
-    <div className="max-w-6xl mx-auto px-6 py-8 relative z-10">
+    <div className="max-w-6xl mx-auto px-6 py-8">
       <FadeInView>
         <section className="mb-12">
           <div className="flex items-center gap-2 mb-4">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[rgba(168,85,247,0.2)] bg-[rgba(168,85,247,0.05)] px-3 py-1 text-xs font-medium text-[#a855f7]">
+            <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium theme-badge">
               <Zap className="w-3 h-3" />
               Всё, что нужно для вайбкодинга
             </span>
@@ -123,7 +123,7 @@ export default function HomePage() {
               <FadeInView key={section.href} delay={index * 0.05}>
                 <Link
                   href={section.href}
-                  className="group block p-5 rounded-lg border border-[rgba(168,85,247,0.15)] bg-[rgba(255,255,255,0.02)] backdrop-blur-sm transition-all duration-300 hover:border-[rgba(168,85,247,0.5)] hover:bg-[rgba(168,85,247,0.05)] hover:shadow-[0_0_20px_rgba(168,85,247,0.1)] hover:-translate-y-0.5"
+                  className="group block p-5 rounded-lg theme-card"
                 >
                   <div className="text-2xl mb-3">{section.emoji}</div>
                   <h3 className="text-base font-semibold mb-1">{section.title}</h3>

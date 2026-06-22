@@ -19,7 +19,7 @@ export default function NeonLogo({ text, size = 'lg', className = '' }: NeonLogo
     return <span className={className}>{text}</span>
   }
 
-  const shadowIntensity = size === 'lg' ? 1 : 0.5
+  const shadowIntensity = size === 'lg' ? 0.5 : 0.25
 
   return (
     <span
