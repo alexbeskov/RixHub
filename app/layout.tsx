@@ -7,6 +7,8 @@ import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
 import CursorGlow from '@/components/CursorGlow'
 
+import AnimatedBackground from '@/components/AnimatedBackground'
+
 export const metadata: Metadata = {
   title: 'RixHub — Всё для вайбкодера в одном месте',
   description: 'AI Tools, Docs, Services, Prompts, Free Steel',
@@ -18,13 +20,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${GeistSans.variable} font-sans antialiased`}>
         <Providers>
           <CursorProvider>
+            <AnimatedBackground />
             <CursorGlow />
-            <Sidebar />
-            <div className="lg:ml-56 min-h-screen flex flex-col">
-              <Header />
-              <main className="flex-1">
-                {children}
-              </main>
+            <div className="relative z-10">
+              <Sidebar />
+              <div className="lg:ml-56 min-h-screen flex flex-col">
+                <Header />
+                <main className="flex-1">
+                  {children}
+                </main>
+              </div>
             </div>
           </CursorProvider>
         </Providers>
