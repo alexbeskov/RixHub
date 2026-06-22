@@ -1,22 +1,21 @@
 'use client'
 
 import Link from 'next/link'
-import { Icon } from '@iconify/react'
-import { ArrowRight, Zap } from 'lucide-react'
+import { ArrowRight, Zap, Brain, BookOpen, Code, Layout, Leaf, RefreshCw, Sparkles } from 'lucide-react'
 import FadeInView from '@/components/FadeInView'
 
 const stats = [
-  { label: 'AI инструментов', value: 100, icon: 'noto:robot-face' },
-  { label: 'промптов', value: 500, icon: 'noto:sparkles' },
-  { label: 'гайдов', value: 50, icon: 'noto:books' },
+  { label: 'AI инструментов', value: 100, Icon: Brain },
+  { label: 'промптов', value: 500, Icon: Sparkles },
+  { label: 'гайдов', value: 50, Icon: BookOpen },
 ]
 
 const sections = [
-  { icon: 'noto:robot-face', title: 'Тир-лист AI', description: 'Рейтинг лучших AI-инструментов для разработки', href: '/ai-tools' },
-  { icon: 'noto:sparkles', title: 'Промпты', description: 'Готовые промпты для разных задач', href: '/prompts' },
-  { icon: 'noto:books', title: 'Гайды', description: 'Подробные руководства и статьи', href: '/docs' },
-  { icon: 'noto:toolbox', title: 'Сервисы', description: 'Сервисы для разработки и дизайна', href: '/services' },
-  { icon: 'noto:free-button', title: 'Бесплатные ресурсы', description: 'Готовые стаки для разных проектов', href: '/free-steel' },
+  { Icon: Brain, title: 'Тир-лист AI', description: 'Рейтинг лучших AI-инструментов для разработки', href: '/ai-tools' },
+  { Icon: BookOpen, title: 'Промпты', description: 'Готовые промпты для разных задач', href: '/prompts' },
+  { Icon: Code, title: 'Гайды', description: 'Подробные руководства и статьи', href: '/docs' },
+  { Icon: Layout, title: 'Сервисы', description: 'Сервисы для разработки и дизайна', href: '/services' },
+  { Icon: Leaf, title: 'Бесплатные ресурсы', description: 'Готовые стаки для разных проектов', href: '/free-steel' },
 ]
 
 export default function HomePage() {
@@ -41,14 +40,17 @@ export default function HomePage() {
           </p>
 
           <div className="flex flex-wrap gap-3">
-            {stats.map((stat) => (
-              <span key={stat.label} className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs text-foreground/70">
-                <Icon icon={stat.icon} className="w-4 h-4" />
-                <span className="font-semibold text-foreground">{stat.value}+</span> {stat.label}
-              </span>
-            ))}
+            {stats.map((stat) => {
+              const IconComp = stat.Icon
+              return (
+                <span key={stat.label} className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs text-foreground/70">
+                  <IconComp className="w-4 h-4 text-foreground/50" />
+                  <span className="font-semibold text-foreground">{stat.value}+</span> {stat.label}
+                </span>
+              )
+            })}
             <span className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs text-foreground/70">
-              <Icon icon="noto:counterclockwise-arrows-button" className="w-4 h-4" />
+              <RefreshCw className="w-4 h-4 text-foreground/50" />
               Постоянные обновления
             </span>
           </div>
@@ -59,21 +61,24 @@ export default function HomePage() {
         <section className="mb-8">
           <h2 className="text-lg font-semibold mb-4">Популярные разделы</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {sections.map((section, index) => (
-              <FadeInView key={section.href} delay={index * 0.08}>
-                <Link
-                  href={section.href}
-                  className="group block p-5 rounded-lg border border-border bg-card hover:border-accent hover:shadow-[0_0_20px_color-mix(in_srgb,var(--accent)_15%,transparent)] hover:-translate-y-0.5 transition-all duration-300"
-                >
-                  <Icon icon={section.icon} className="w-8 h-8 mb-3" />
-                  <h3 className="text-base font-semibold mb-1">{section.title}</h3>
-                  <p className="text-sm text-foreground/60 mb-3">{section.description}</p>
-                  <span className="inline-flex items-center gap-1 text-sm text-foreground/40 group-hover:text-foreground transition-colors">
-                    Смотреть <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
-                </Link>
-              </FadeInView>
-            ))}
+            {sections.map((section, index) => {
+              const IconComp = section.Icon
+              return (
+                <FadeInView key={section.href} delay={index * 0.08}>
+                  <Link
+                    href={section.href}
+                    className="group block p-5 rounded-lg border border-border bg-card hover:border-accent hover:shadow-[0_0_20px_color-mix(in_srgb,var(--accent)_15%,transparent)] hover:-translate-y-0.5 transition-all duration-300"
+                  >
+                    <IconComp className="w-8 h-8 mb-3 text-foreground/60 group-hover:text-accent transition-colors" />
+                    <h3 className="text-base font-semibold mb-1">{section.title}</h3>
+                    <p className="text-sm text-foreground/60 mb-3">{section.description}</p>
+                    <span className="inline-flex items-center gap-1 text-sm text-foreground/40 group-hover:text-foreground transition-colors">
+                      Смотреть <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </Link>
+                </FadeInView>
+              )
+            })}
           </div>
         </section>
       </FadeInView>
