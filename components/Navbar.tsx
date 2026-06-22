@@ -4,7 +4,6 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import NeonLogo from './NeonLogo'
 import ThemeToggle from './ThemeToggle'
 import { Menu, X } from 'lucide-react'
 
@@ -24,7 +23,7 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-[rgba(5,5,8,0.7)] backdrop-blur-xl border-b theme-border-subtle">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link href="/" className="text-lg font-semibold tracking-tight text-foreground">
-          <NeonLogo text="RixHub" size="md" />
+          RixHub
         </Link>
 
         <div className="hidden md:flex items-center gap-1">

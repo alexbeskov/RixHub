@@ -1,10 +1,8 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { useInView } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Zap } from 'lucide-react'
-import NeonLogo from '@/components/NeonLogo'
 import FadeInView from '@/components/FadeInView'
 
 const stats = [
@@ -21,67 +19,6 @@ const sections = [
   { emoji: '🆓', title: 'Бесплатные ресурсы', description: 'Готовые стаки для разных проектов', href: '/free-steel' },
 ]
 
-const TYPEWRITER_TEXT = 'AI-инструменты, промпты и гайды для вайбкодеров'
-
-function AnimatedCounter({ value, label, icon }: { value: number; label: string; icon: string }) {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
-  const [displayValue, setDisplayValue] = useState(0)
-
-  useEffect(() => {
-    if (!isInView) return
-
-    const duration = 1500
-    const start = performance.now()
-
-    const tick = (now: number) => {
-      const elapsed = now - start
-      const progress = Math.min(elapsed / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setDisplayValue(Math.round(eased * value))
-
-      if (progress < 1) {
-        requestAnimationFrame(tick)
-      }
-    }
-
-    requestAnimationFrame(tick)
-  }, [isInView, value])
-
-  return (
-    <span ref={ref} className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs text-foreground/70">
-      <span>{icon}</span>
-      <span className="font-semibold text-foreground">{displayValue}+</span> {label}
-    </span>
-  )
-}
-
-function TypewriterText({ text }: { text: string }) {
-  const [displayed, setDisplayed] = useState('')
-  const [showCursor, setShowCursor] = useState(true)
-
-  useEffect(() => {
-    let i = 0
-    const interval = setInterval(() => {
-      if (i < text.length) {
-        setDisplayed(text.slice(0, i + 1))
-        i++
-      } else {
-        clearInterval(interval)
-      }
-    }, 40)
-
-    return () => clearInterval(interval)
-  }, [text])
-
-  return (
-    <span className="text-lg text-foreground/70 max-w-xl">
-      {displayed}
-      {showCursor && <span className="typewriter-cursor" />}
-    </span>
-  )
-}
-
 export default function HomePage() {
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
@@ -94,18 +31,21 @@ export default function HomePage() {
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-            <NeonLogo text="RixHub" size="lg" />
+            RixHub
           </h1>
-          <div className="mb-4">
-            <TypewriterText text={TYPEWRITER_TEXT} />
-          </div>
+          <p className="text-lg text-foreground/70 max-w-xl mb-2">
+            AI-инструменты, промпты и гайды для вайбкодеров
+          </p>
           <p className="text-sm text-foreground/50 max-w-xl mb-6">
             Подборки лучших AI-инструментов, готовые промпты, гайды и ресурсы. Собрано с любовью для соло-билдеров и энтузиастов.
           </p>
 
           <div className="flex flex-wrap gap-3">
             {stats.map((stat) => (
-              <AnimatedCounter key={stat.label} value={stat.value} label={stat.label} icon={stat.icon} />
+              <span key={stat.label} className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs text-foreground/70">
+                <span>{stat.icon}</span>
+                <span className="font-semibold text-foreground">{stat.value}+</span> {stat.label}
+              </span>
             ))}
             <span className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs text-foreground/70">
               <span>🔄</span>
@@ -120,10 +60,10 @@ export default function HomePage() {
           <h2 className="text-lg font-semibold mb-4">Популярные разделы</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {sections.map((section, index) => (
-              <FadeInView key={section.href} delay={index * 0.05}>
+              <FadeInView key={section.href} delay={index * 0.08}>
                 <Link
                   href={section.href}
-                  className="group block p-5 rounded-lg theme-card"
+                  className="group block p-5 rounded-lg border border-border bg-card hover:border-accent hover:shadow-[0_0_20px_color-mix(in_srgb,var(--accent)_15%,transparent)] hover:-translate-y-0.5 transition-all duration-300"
                 >
                   <div className="text-2xl mb-3">{section.emoji}</div>
                   <h3 className="text-base font-semibold mb-1">{section.title}</h3>
