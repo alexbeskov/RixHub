@@ -1,22 +1,22 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { Icon } from '@iconify/react'
 import { ArrowRight, Zap } from 'lucide-react'
 import FadeInView from '@/components/FadeInView'
 
 const stats = [
-  { label: 'AI инструментов', value: 100, icon: '🤖' },
-  { label: 'промптов', value: 500, icon: '✨' },
-  { label: 'гайдов', value: 50, icon: '📚' },
+  { label: 'AI инструментов', value: 100, icon: 'noto:robot-face' },
+  { label: 'промптов', value: 500, icon: 'noto:sparkles' },
+  { label: 'гайдов', value: 50, icon: 'noto:books' },
 ]
 
 const sections = [
-  { emoji: '🤖', title: 'Тир-лист AI', description: 'Рейтинг лучших AI-инструментов для разработки', href: '/ai-tools' },
-  { emoji: '✨', title: 'Промпты', description: 'Готовые промпты для разных задач', href: '/prompts' },
-  { emoji: '📚', title: 'Гайды', description: 'Подробные руководства и статьи', href: '/docs' },
-  { emoji: '🛠️', title: 'Сервисы', description: 'Сервисы для разработки и дизайна', href: '/services' },
-  { emoji: '🆓', title: 'Бесплатные ресурсы', description: 'Готовые стаки для разных проектов', href: '/free-steel' },
+  { icon: 'noto:robot-face', title: 'Тир-лист AI', description: 'Рейтинг лучших AI-инструментов для разработки', href: '/ai-tools' },
+  { icon: 'noto:sparkles', title: 'Промпты', description: 'Готовые промпты для разных задач', href: '/prompts' },
+  { icon: 'noto:books', title: 'Гайды', description: 'Подробные руководства и статьи', href: '/docs' },
+  { icon: 'noto:toolbox', title: 'Сервисы', description: 'Сервисы для разработки и дизайна', href: '/services' },
+  { icon: 'noto:free-button', title: 'Бесплатные ресурсы', description: 'Готовые стаки для разных проектов', href: '/free-steel' },
 ]
 
 export default function HomePage() {
@@ -43,12 +43,12 @@ export default function HomePage() {
           <div className="flex flex-wrap gap-3">
             {stats.map((stat) => (
               <span key={stat.label} className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs text-foreground/70">
-                <span>{stat.icon}</span>
+                <Icon icon={stat.icon} className="w-4 h-4" />
                 <span className="font-semibold text-foreground">{stat.value}+</span> {stat.label}
               </span>
             ))}
             <span className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs text-foreground/70">
-              <span>🔄</span>
+              <Icon icon="noto:counterclockwise-arrows-button" className="w-4 h-4" />
               Постоянные обновления
             </span>
           </div>
@@ -65,7 +65,7 @@ export default function HomePage() {
                   href={section.href}
                   className="group block p-5 rounded-lg border border-border bg-card hover:border-accent hover:shadow-[0_0_20px_color-mix(in_srgb,var(--accent)_15%,transparent)] hover:-translate-y-0.5 transition-all duration-300"
                 >
-                  <div className="text-2xl mb-3">{section.emoji}</div>
+                  <Icon icon={section.icon} className="w-8 h-8 mb-3" />
                   <h3 className="text-base font-semibold mb-1">{section.title}</h3>
                   <p className="text-sm text-foreground/60 mb-3">{section.description}</p>
                   <span className="inline-flex items-center gap-1 text-sm text-foreground/40 group-hover:text-foreground transition-colors">
