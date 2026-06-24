@@ -189,10 +189,11 @@ export default function Sidebar() {
               <Github className="w-4 h-4" />
             </a>
             <a
-              href="#"
+              href="https://t.me/rixbild"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-foreground/40 hover:text-foreground transition-colors"
               aria-label="Telegram"
-              title="Ссылка на Telegram будет добавлена позже"
             >
               <Icon icon="simple-icons:telegram" className="w-4 h-4" />
             </a>
