@@ -530,7 +530,7 @@ function ModelCard({ model, onClick }: { model: Model; onClick: () => void }) {
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="group relative w-full text-left rounded-xl border border-border bg-card/50 backdrop-blur-sm p-4 transition-all duration-300"
+      className="group relative w-full text-left rounded-xl border border-border bg-card/50 backdrop-blur-sm p-4 transition-all duration-300 flex flex-col justify-between items-start h-[148px]"
       style={{
         boxShadow: hovered ? `0 0 30px ${color}15, 0 4px 20px rgba(0,0,0,0.2)` : '0 2px 8px rgba(0,0,0,0.1)',
         borderColor: hovered ? `${color}40` : undefined,
@@ -544,9 +544,9 @@ function ModelCard({ model, onClick }: { model: Model; onClick: () => void }) {
         style={{ background: `radial-gradient(ellipse at 50% 0%, ${color}08 0%, transparent 70%)` }}
       />
 
-      <div className="relative">
+      <div className="relative w-full h-full flex flex-col justify-between">
         {/* Top row: icon + name + tier */}
-        <div className="flex items-start gap-3 mb-3">
+        <div className="flex items-start gap-3">
           <div
             className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
             style={{ backgroundColor: color + '12', border: `1px solid ${color}20` }}
@@ -573,24 +573,22 @@ function ModelCard({ model, onClick }: { model: Model; onClick: () => void }) {
           </div>
         </div>
 
-        {/* Badges */}
-        {model.badges.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-2.5">
-            {model.badges.slice(0, 2).map((badge) => (
-              <span
-                key={badge}
-                className="px-2 py-0.5 rounded-full text-[10px] font-medium border"
-                style={{
-                  backgroundColor: color + '08',
-                  borderColor: color + '20',
-                  color: color + 'bb',
-                }}
-              >
-                {badge}
-              </span>
-            ))}
-          </div>
-        )}
+        {/* Badges — always takes space */}
+        <div className="flex flex-wrap gap-1 min-h-[22px]">
+          {model.badges.slice(0, 2).map((badge) => (
+            <span
+              key={badge}
+              className="px-2 py-0.5 rounded-full text-[10px] font-medium border"
+              style={{
+                backgroundColor: color + '08',
+                borderColor: color + '20',
+                color: color + 'bb',
+              }}
+            >
+              {badge}
+            </span>
+          ))}
+        </div>
 
         {/* Bottom row: price + context */}
         <div className="flex items-center gap-2">
@@ -701,6 +699,7 @@ export default function AIToolsPage() {
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.9 }}
                           transition={{ duration: 0.2 }}
+                          className="h-full"
                         >
                           <ModelCard model={model} onClick={() => setSelectedModel(model)} />
                         </motion.div>
