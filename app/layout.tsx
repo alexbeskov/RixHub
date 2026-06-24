@@ -4,10 +4,11 @@ import { Press_Start_2P, VT323 } from 'next/font/google'
 import '../styles/globals.css'
 import Providers from './providers'
 import { CursorProvider } from './cursor-context'
+import { SidebarProvider } from './sidebar-context'
 import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
 import CursorDotRing from '@/components/CursorDotRing'
-
+import LayoutWrapper from '@/components/LayoutWrapper'
 import AnimatedBackground from '@/components/AnimatedBackground'
 
 const pressStart = Press_Start_2P({
@@ -35,17 +36,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${GeistSans.variable} ${pressStart.variable} ${vt323.variable} font-sans antialiased`}>
         <Providers>
           <CursorProvider>
-            <AnimatedBackground />
-            <CursorDotRing />
-            <div className="relative z-10">
-              <Sidebar />
-              <div className="lg:ml-56 min-h-screen flex flex-col">
-                <Header />
-                <main className="flex-1">
-                  {children}
-                </main>
+            <SidebarProvider>
+              <AnimatedBackground />
+              <CursorDotRing />
+              <div className="relative z-10">
+                <Sidebar />
+                <LayoutWrapper>
+                  <Header />
+                  <main className="flex-1">
+                    {children}
+                  </main>
+                </LayoutWrapper>
               </div>
-            </div>
+            </SidebarProvider>
           </CursorProvider>
         </Providers>
       </body>
