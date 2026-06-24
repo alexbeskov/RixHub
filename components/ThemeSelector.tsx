@@ -1,7 +1,8 @@
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Palette, Check } from 'lucide-react'
+import { Palette, Check, MousePointer2 } from 'lucide-react'
+import { useCursor } from '@/app/cursor-context'
 
 const themes = [
   { id: 'red', label: 'Красная', color: '#ff4444' },
@@ -12,6 +13,7 @@ const themes = [
 
 export default function ThemeSelector() {
   const { theme, setTheme } = useTheme()
+  const { enabled: cursorEnabled, toggle: toggleCursor } = useCursor()
   const [open, setOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
 
@@ -46,7 +48,7 @@ export default function ThemeSelector() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.95 }}
               transition={{ duration: 0.15 }}
-              className="absolute right-0 top-11 z-50 w-44 rounded-lg border border-border bg-card p-2 shadow-lg"
+              className="absolute right-0 top-11 z-50 w-48 rounded-lg border border-border bg-card p-2 shadow-lg"
             >
               {themes.map((t) => (
                 <button
@@ -65,6 +67,15 @@ export default function ThemeSelector() {
                   {theme === t.id && <Check className="w-3.5 h-3.5" />}
                 </button>
               ))}
+              <div className="my-1.5 border-t border-border" />
+              <button
+                onClick={() => toggleCursor()}
+                className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted transition-colors"
+              >
+                <MousePointer2 className="w-4 h-4" />
+                <span className="flex-1 text-left">Кастомный курсор</span>
+                {cursorEnabled && <Check className="w-3.5 h-3.5" />}
+              </button>
             </motion.div>
           </>
         )}

@@ -4,6 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Icon } from '@iconify/react'
+import RixHubLogo from './RixHubLogo'
 import {
   Home,
   Bot,
@@ -14,31 +16,76 @@ import {
   Info,
   Menu,
   X,
-  ChevronRight,
-  Mail,
+  Send,
   Github,
-  Twitter,
+  Loader2,
 } from 'lucide-react'
+import { useLanguage } from '@/app/language-context'
 
 const navItems = [
-  { label: 'Главная', href: '/', icon: Home },
-  { label: 'Тир-лист AI', href: '/ai-tools', icon: Bot },
-  { label: 'Промпты', href: '/prompts', icon: Sparkles },
-  { label: 'Гайды', href: '/docs', icon: BookOpen },
-  { label: 'Сервисы', href: '/services', icon: Wrench },
-  { label: 'Бесплатные ресурсы', href: '/free-steel', icon: Gift },
-  { label: 'О проекте', href: '/about', icon: Info },
+  { label: 'Главная', labelEn: 'Home', href: '/', icon: Home },
+  { label: 'Тир-лист AI', labelEn: 'AI Tier List', href: '/ai-tools', icon: Bot },
+  { label: 'Промпты', labelEn: 'Prompts', href: '/prompts', icon: Sparkles },
+  { label: 'Гайды', labelEn: 'Guides', href: '/docs', icon: BookOpen },
+  { label: 'Сервисы', labelEn: 'Services', href: '/services', icon: Wrench },
+  { label: 'Бесплатные ресурсы', labelEn: 'Free Resources', href: '/free-steel', icon: Gift },
+  { label: 'О проекте', labelEn: 'About', href: '/about', icon: Info },
 ]
 
 export default function Sidebar() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { lang } = useLanguage()
+  const [email, setEmail] = useState('')
+  const [subscribing, setSubscribing] = useState(false)
+  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+  const t = {
+    ru: {
+      subscribeTitle: 'Обновления',
+      emailPlaceholder: 'email...',
+      subscribeSuccess: '✓',
+      subscribeError: '✗',
+    },
+    en: {
+      subscribeTitle: 'Updates',
+      emailPlaceholder: 'email...',
+      subscribeSuccess: '✓',
+      subscribeError: '✗',
+    },
+  }
+
+  const currentT = t[lang]
+
+  const handleSubscribe = async () => {
+    if (!email || !email.includes('@')) return
+    setSubscribing(true)
+    setSubscribeStatus('idle')
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      if (res.ok) {
+        setSubscribeStatus('success')
+        setEmail('')
+      } else {
+        setSubscribeStatus('error')
+      }
+    } catch {
+      setSubscribeStatus('error')
+    } finally {
+      setSubscribing(false)
+    }
+  }
 
   const sidebarContent = (
     <>
       <div className="px-4 pt-6 pb-4">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold tracking-tight">RixHub</span>
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <RixHubLogo size={26} className="shrink-0 group-hover:drop-shadow-[0_0_6px_rgba(34,231,196,0.6)] transition-all duration-300" />
+          <span className="text-xl font-bold tracking-tight font-pixel">RixHub</span>
         </Link>
       </div>
 
@@ -58,7 +105,7 @@ export default function Sidebar() {
               }`}
             >
               <Icon className="w-4 h-4 shrink-0" />
-              <span className="truncate">{item.label}</span>
+              <span className="truncate">{lang === 'ru' ? item.label : item.labelEn}</span>
               {isActive && (
                 <motion.div
                   layoutId="sidebar-indicator"
@@ -71,25 +118,51 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="px-4 py-4 mt-auto border-t border-border">
-        <p className="text-xs text-foreground/40 mb-3">Подпишись на обновления</p>
-        <div className="flex gap-2">
-          <div className="flex-1 h-8 rounded-md border border-border bg-transparent text-sm px-2 flex items-center text-foreground/30">
-            email
-          </div>
-          <button className="h-8 px-3 rounded-md bg-accent text-background text-xs font-medium hover:opacity-90 transition-opacity">
-            <ChevronRight className="w-4 h-4" />
+      <div className="px-3 py-3 mt-auto border-t border-border">
+        <div className="flex items-center gap-1.5 mb-2">
+          <p className="text-[10px] text-foreground/40 font-pixel-mono uppercase tracking-wider">{currentT.subscribeTitle}</p>
+          {subscribeStatus === 'success' && (
+            <span className="text-[10px] text-green-500">{currentT.subscribeSuccess}</span>
+          )}
+          {subscribeStatus === 'error' && (
+            <span className="text-[10px] text-red-500">{currentT.subscribeError}</span>
+          )}
+        </div>
+        <div className="flex gap-1.5">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
+            placeholder={currentT.emailPlaceholder}
+            className="flex-1 h-7 rounded border border-border bg-transparent text-[11px] px-1.5 text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-accent transition-colors"
+          />
+          <button
+            onClick={handleSubscribe}
+            disabled={subscribing}
+            className="h-7 w-7 rounded bg-accent text-background flex items-center justify-center hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0"
+            aria-label="Subscribe"
+          >
+            {subscribing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3" />}
           </button>
         </div>
-        <div className="flex items-center gap-3 mt-4">
-          <a href="#" className="text-foreground/40 hover:text-foreground transition-colors">
+        <div className="flex items-center gap-3 mt-3">
+          <a
+            href="https://github.com/alexbeskov/RixHub"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-foreground/40 hover:text-foreground transition-colors"
+            aria-label="GitHub"
+          >
             <Github className="w-4 h-4" />
           </a>
-          <a href="#" className="text-foreground/40 hover:text-foreground transition-colors">
-            <Twitter className="w-4 h-4" />
-          </a>
-          <a href="#" className="text-foreground/40 hover:text-foreground transition-colors">
-            <Mail className="w-4 h-4" />
+          <a
+            href="#"
+            className="text-foreground/40 hover:text-foreground transition-colors"
+            aria-label="Telegram"
+            title="Ссылка на Telegram будет добавлена позже"
+          >
+            <Icon icon="simple-icons:telegram" className="w-4 h-4" />
           </a>
         </div>
       </div>
@@ -101,7 +174,7 @@ export default function Sidebar() {
       {/* Mobile toggle */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="fixed top-4 left-4 z-[100] lg:hidden w-9 h-9 flex items-center justify-center rounded-md border border-border bg-card"
+        className="fixed top-3 left-3 z-[100] lg:hidden w-9 h-9 flex items-center justify-center rounded-md border border-border bg-card/90 backdrop-blur-sm"
         aria-label="Toggle menu"
       >
         {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -121,7 +194,7 @@ export default function Sidebar() {
       </AnimatePresence>
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex w-56 h-screen flex-col border-r border-border fixed left-0 top-0 z-[80] bg-background">
+      <aside className="hidden lg:flex w-56 h-screen flex-col border-r border-border fixed left-0 top-0 z-[80] bg-background/95 backdrop-blur-sm">
         {sidebarContent}
       </aside>
 

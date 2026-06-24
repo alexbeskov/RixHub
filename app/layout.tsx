@@ -1,13 +1,28 @@
 import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
+import { Press_Start_2P, VT323 } from 'next/font/google'
 import '../styles/globals.css'
 import Providers from './providers'
 import { CursorProvider } from './cursor-context'
 import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
-import CursorGlow from '@/components/CursorGlow'
+import CursorDotRing from '@/components/CursorDotRing'
 
 import AnimatedBackground from '@/components/AnimatedBackground'
+
+const pressStart = Press_Start_2P({
+  weight: '400',
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-pixel',
+  display: 'swap',
+})
+
+const vt323 = VT323({
+  weight: '400',
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-pixel-mono',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'RixHub — Всё для вайбкодера в одном месте',
@@ -17,11 +32,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" suppressHydrationWarning>
-      <body className={`${GeistSans.variable} font-sans antialiased`}>
+      <body className={`${GeistSans.variable} ${pressStart.variable} ${vt323.variable} font-sans antialiased`}>
         <Providers>
           <CursorProvider>
             <AnimatedBackground />
-            <CursorGlow />
+            <CursorDotRing />
             <div className="relative z-10">
               <Sidebar />
               <div className="lg:ml-56 min-h-screen flex flex-col">
