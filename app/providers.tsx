@@ -6,7 +6,7 @@ import { LanguageProvider } from '@/app/language-context'
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider attribute="data-theme" defaultTheme="red" themes={['red', 'teal', 'light', 'blue']} enableSystem={false}>
+    <ThemeProvider attribute="data-theme" defaultTheme="dota2" themes={['dota2', 'brezee', 'VK', 'binance', 'DS']} enableSystem={false}>
       <LanguageProvider>
         {children}
       </LanguageProvider>

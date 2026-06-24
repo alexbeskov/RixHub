@@ -5,10 +5,11 @@ import { Palette, Check, MousePointer2 } from 'lucide-react'
 import { useCursor } from '@/app/cursor-context'
 
 const themes = [
-  { id: 'red', label: 'Красная', color: '#ff4444' },
-  { id: 'teal', label: 'Бирюзовая', color: '#00d4aa' },
-  { id: 'light', label: 'Светлая', color: '#e5e5e5' },
-  { id: 'blue', label: 'Синяя', color: '#4488ff' },
+  { id: 'dota2', label: 'dota2', color: '#ff4444' },
+  { id: 'brezee', label: 'brezee', color: '#00d4aa' },
+  { id: 'VK', label: 'VK', color: '#4488ff' },
+  { id: 'binance', label: 'binance', color: '#fcd535' },
+  { id: 'DS', label: 'DS', color: '#a855f7' },
 ]
 
 export default function ThemeSelector() {
