@@ -21,8 +21,8 @@ import {
   Loader2,
   PanelLeft,
   PanelRight,
-  ChevronLeft,
-  ChevronRight,
+  CheckCircle,
+  XCircle,
 } from 'lucide-react'
 import { useLanguage } from '@/app/language-context'
 import { useSidebar } from '@/app/sidebar-context'
@@ -73,14 +73,17 @@ export default function Sidebar() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       })
+      const data = await res.json()
       if (res.ok) {
         setSubscribeStatus('success')
         setEmail('')
       } else {
         setSubscribeStatus('error')
+        console.error('Subscribe error:', data.error)
       }
-    } catch {
+    } catch (err) {
       setSubscribeStatus('error')
+      console.error('Subscribe error:', err)
     } finally {
       setSubscribing(false)
     }
@@ -154,26 +157,35 @@ export default function Sidebar() {
           <div className="flex items-center gap-1.5 mb-2">
             <p className="text-[10px] text-foreground/40 font-pixel-mono uppercase tracking-wider">{currentT.subscribeTitle}</p>
             {subscribeStatus === 'success' && (
-              <span className="text-[10px] text-green-500">{currentT.subscribeSuccess}</span>
+              <span className="inline-flex items-center gap-1 text-[10px] text-green-500 font-medium">
+                <CheckCircle className="w-3 h-3" /> Подписано!
+              </span>
             )}
             {subscribeStatus === 'error' && (
-              <span className="text-[10px] text-red-500">{currentT.subscribeError}</span>
+              <span className="inline-flex items-center gap-1 text-[10px] text-red-500 font-medium">
+                <XCircle className="w-3 h-3" /> Ошибка
+              </span>
             )}
           </div>
           <div className="flex gap-1.5">
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value)
+                if (subscribeStatus !== 'idle') setSubscribeStatus('idle')
+              }}
               onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
               placeholder={currentT.emailPlaceholder}
-              className="flex-1 h-7 rounded border border-border bg-transparent text-[11px] px-1.5 text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-accent transition-colors"
+              disabled={subscribing}
+              className="flex-1 h-7 rounded border border-border bg-transparent text-[11px] px-1.5 text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-accent transition-colors disabled:opacity-50"
             />
             <button
               onClick={handleSubscribe}
-              disabled={subscribing}
-              className="h-7 w-7 rounded bg-accent text-background flex items-center justify-center hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0"
+              disabled={subscribing || !email.includes('@')}
+              className="h-7 w-7 rounded bg-accent text-background flex items-center justify-center hover:opacity-90 transition-opacity disabled:opacity-30 shrink-0"
               aria-label="Subscribe"
+              title="Subscribe"
             >
               {subscribing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3" />}
             </button>
