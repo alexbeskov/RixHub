@@ -1,236 +1,735 @@
 'use client'
 
-import { useState } from 'react'
-import FadeInView from '@/components/FadeInView'
-import { ExternalLink, Sparkles } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  X,
+  ExternalLink,
+  Check,
+  XCircle,
+  Layers,
+  Globe,
+  Bot,
+  Hexagon,
+  Code2,
+  Server,
+  Brain,
+  Bug,
+  Crown,
+  Zap,
+  Paintbrush,
+  DollarSign,
+  Star,
+} from 'lucide-react'
 import { Icon } from '@iconify/react'
+import FadeInView from '@/components/FadeInView'
 
-interface AIModel {
+// ============================
+// DATA
+// ============================
+
+const categories = [
+  { id: 'all', label: 'All Models', icon: Layers },
+  { id: 'web', label: 'Web', icon: Globe },
+  { id: 'telegram', label: 'Telegram Bots', icon: Bot },
+  { id: 'web3', label: 'Web3', icon: Hexagon },
+  { id: 'frontend', label: 'Frontend', icon: Code2 },
+  { id: 'backend', label: 'Backend', icon: Server },
+  { id: 'agents', label: 'Agents', icon: Brain },
+  { id: 'debugging', label: 'Debugging', icon: Bug },
+  { id: 'free', label: 'Free Models', icon: DollarSign },
+]
+
+const tierOrder = ['S+', 'S', 'A', 'B'] as const
+
+type Tier = (typeof tierOrder)[number]
+
+interface Model {
+  id: string
   name: string
-  description: string
+  company: string
+  tier: Tier
   price: string
-  url: string
-  icon: string | React.ReactNode
-  customIcon?: boolean
+  context: string
+  bestFor: string[]
+  pros: string[]
+  cons: string[]
+  description: string
+  website: string
+  icon: string
+  badges: string[]
 }
 
-interface Tier {
-  label: string
-  color: string
-  glowColor: string
-  models: AIModel[]
-}
-
-const tiers: Tier[] = [
+const models: Model[] = [
   {
-    label: 'S-tier',
-    color: '#f59e0b',
-    glowColor: 'rgba(245, 158, 11, 0.15)',
-    models: [
-      {
-        name: 'Claude Sonnet 4.5',
-        description: 'Лучший для сложных задач. Понимает контекст всего проекта, отлично рефакторит и находит баги.',
-        price: '$20/мес',
-        url: 'https://claude.ai',
-        icon: 'simple-icons:anthropic',
-      },
-      {
-        name: 'Gemini 2.5 Pro',
-        description: 'Огромный контекст окна, лучший когда нужно загрузить весь проект целиком. Отлично работает с Google стеком.',
-        price: 'Бесплатный тир через AI Studio',
-        url: 'https://aistudio.google.com',
-        icon: 'simple-icons:google',
-      },
-    ],
+    id: 'claude-sonnet-4',
+    name: 'Claude Sonnet 4',
+    company: 'Anthropic',
+    tier: 'S+',
+    price: '$20/month',
+    context: '200k',
+    bestFor: ['Web', 'Backend', 'Telegram Bots', 'Architecture', 'Debugging'],
+    pros: ['Лучший для архитектуры', 'Отличный рефакторинг', 'Хорошо держит большой контекст', 'Очень качественный код'],
+    cons: ['Иногда слишком многословный', 'Есть лимиты'],
+    description: 'Лучший выбор для сложных задач. Понимает контекст всего проекта, отлично рефакторит и находит баги.',
+    website: 'https://claude.ai',
+    icon: 'simple-icons:anthropic',
+    badges: ['🏆 Architecture King', '🌐 Web3 King', '⭐ Overall Best'],
   },
   {
-    label: 'A-tier',
-    color: '#10b981',
-    glowColor: 'rgba(16, 185, 129, 0.15)',
-    models: [
-      {
-        name: 'Kimi k2',
-        description: 'Сильная бесплатная модель, хороша для логики и алгоритмических задач.',
-        price: 'Бесплатно',
-        url: 'https://kimi.ai',
-        icon: 'K',
-        customIcon: true,
-      },
-      {
-        name: 'DeepSeek V3',
-        description: 'Лучшая бесплатная альтернатива, особенно сильна в бэкенде и алгоритмах.',
-        price: 'Бесплатно',
-        url: 'https://deepseek.com',
-        icon: 'simple-icons:deepseek',
-      },
-      {
-        name: 'GPT-4o',
-        description: 'Универсальная модель, хороша для большинства задач.',
-        price: '$20/мес',
-        url: 'https://chat.openai.com',
-        icon: 'simple-icons:openai',
-      },
-    ],
+    id: 'codex',
+    name: 'Codex',
+    company: 'OpenAI',
+    tier: 'S+',
+    price: 'ChatGPT Plus',
+    context: '128k',
+    bestFor: ['Refactoring', 'Debugging', 'Backend'],
+    pros: ['Очень сильный в кодинге', 'Отличный дебаг', 'Хорошо понимает существующий код'],
+    cons: ['Иногда излишне усложняет решения'],
+    description: 'Специализированная модель для кодинга. Отлично справляется с рефакторингом и дебагом.',
+    website: 'https://openai.com',
+    icon: 'simple-icons:openai',
+    badges: ['🐛 Debugging King'],
   },
   {
-    label: 'B-tier',
-    color: '#3b82f6',
-    glowColor: 'rgba(59, 130, 246, 0.15)',
-    models: [
-      {
-        name: 'Qwen2.5 Coder',
-        description: 'Специализирована именно под код, хороша для простых и средних задач.',
-        price: 'Бесплатно',
-        url: 'https://chat.qwen.ai',
-        icon: 'simple-icons:alibabadotcom',
-      },
-      {
-        name: 'Grok 3',
-        description: 'Единственная модель с доступом к реальному времени, хороша для ресёрча.',
-        price: 'Есть бесплатный тир',
-        url: 'https://grok.com',
-        icon: 'simple-icons:x',
-      },
-      {
-        name: 'Mistral Large',
-        description: 'Европейская альтернатива, хороша если важна приватность данных.',
-        price: 'Есть бесплатный API',
-        url: 'https://mistral.ai',
-        icon: 'simple-icons:mistral',
-      },
-    ],
+    id: 'claude-opus',
+    name: 'Claude Opus',
+    company: 'Anthropic',
+    tier: 'S+',
+    price: 'Max Plan',
+    context: '200k',
+    bestFor: ['Large Projects', 'Architecture'],
+    pros: ['Один из лучших кодеров', 'Огромный контекст', 'Премиум качество'],
+    cons: ['Дорогой', 'Медленнее Sonnet'],
+    description: 'Флагманская модель Anthropic. Лучший выбор для огромных проектов и сложной архитектуры.',
+    website: 'https://claude.ai',
+    icon: 'simple-icons:anthropic',
+    badges: [],
   },
   {
-    label: 'C-tier',
-    color: '#8b5cf6',
-    glowColor: 'rgba(139, 92, 246, 0.15)',
-    models: [
-      {
-        name: 'GitHub Copilot',
-        description: 'Хорош только внутри IDE как автодополнение, в диалоге слабее конкурентов.',
-        price: '$10/мес',
-        url: 'https://github.com/features/copilot',
-        icon: 'simple-icons:github',
-      },
-      {
-        name: 'MiMo',
-        description: 'Подходит только для простых небольших задач.',
-        price: 'Бесплатно',
-        url: 'https://mimo.org',
-        icon: 'M',
-        customIcon: true,
-      },
-    ],
+    id: 'gemini-25-pro',
+    name: 'Gemini 2.5 Pro',
+    company: 'Google',
+    tier: 'S+',
+    price: '$20',
+    context: '1M',
+    bestFor: ['Frontend', 'Web', 'Long context'],
+    pros: ['Огромный контекст', 'Отличный для React', 'Хороший UI код'],
+    cons: ['Иногда допускает ошибки'],
+    description: 'Огромное контекстное окно — лучший выбор, когда нужно загрузить весь проект целиком. Отлично работает с Google стеком.',
+    website: 'https://gemini.google.com',
+    icon: 'simple-icons:google',
+    badges: ['🎨 UI Master'],
+  },
+  {
+    id: 'gpt-5',
+    name: 'GPT-5',
+    company: 'OpenAI',
+    tier: 'S',
+    price: '$20',
+    context: '256k',
+    bestFor: ['General coding', 'Brainstorming'],
+    pros: ['Универсальный', 'Хороший reasoning'],
+    cons: ['Не всегда лучший для сложной архитектуры'],
+    description: 'Универсальная модель, хороша для большинства задач — от написания кода до генерации идей.',
+    website: 'https://chatgpt.com',
+    icon: 'simple-icons:openai',
+    badges: [],
+  },
+  {
+    id: 'o3',
+    name: 'o3',
+    company: 'OpenAI',
+    tier: 'S',
+    price: 'ChatGPT Plus',
+    context: '200k',
+    bestFor: ['Reasoning', 'Complex tasks'],
+    pros: ['Сильное мышление', 'Отлично справляется с логикой'],
+    cons: ['Медленный', 'Ограниченный доступ'],
+    description: 'Модель с усиленным reasoning. Лучший выбор для задач, требующих глубокого анализа.',
+    website: 'https://openai.com',
+    icon: 'simple-icons:openai',
+    badges: ['🧠 Reasoning King'],
+  },
+  {
+    id: 'deepseek-v3',
+    name: 'DeepSeek V3',
+    company: 'DeepSeek',
+    tier: 'S',
+    price: 'Free',
+    context: '64k',
+    bestFor: ['Budget coding', 'Backend', 'Algorithms'],
+    pros: ['Бесплатный', 'Отличное соотношение цена/качество', 'Хорош в бэкенде'],
+    cons: ['Иногда хуже Claude', 'Ограниченный контекст'],
+    description: 'Лучшая бесплатная альтернатива. Особенно сильна в бэкенде и алгоритмических задачах.',
+    website: 'https://deepseek.com',
+    icon: 'simple-icons:deepseek',
+    badges: ['💰 Best Free'],
+  },
+  {
+    id: 'deepseek-r1',
+    name: 'DeepSeek R1',
+    company: 'DeepSeek',
+    tier: 'S',
+    price: 'Free',
+    context: '64k',
+    bestFor: ['Reasoning'],
+    pros: ['Очень хорошее мышление', 'Бесплатный', 'Open source'],
+    cons: ['Медленнее V3', 'Требует больше токенов'],
+    description: 'Reasoning-модель с открытым исходным кодом. Отличное качество мышления бесплатно.',
+    website: 'https://deepseek.com',
+    icon: 'simple-icons:deepseek',
+    badges: [],
+  },
+  {
+    id: 'gemini-flash',
+    name: 'Gemini Flash',
+    company: 'Google',
+    tier: 'A',
+    price: 'Free',
+    context: '1M',
+    bestFor: ['Speed'],
+    pros: ['Очень быстрый', 'Огромный контекст', 'Бесплатный'],
+    cons: ['Иногда теряет качество'],
+    description: 'Сверхбыстрая модель от Google. Идеален, когда нужен результат моментально.',
+    website: 'https://gemini.google.com',
+    icon: 'simple-icons:google',
+    badges: ['⚡ Fastest'],
+  },
+  {
+    id: 'qwen-3',
+    name: 'Qwen 3',
+    company: 'Alibaba',
+    tier: 'A',
+    price: 'Free',
+    context: '128k',
+    bestFor: ['Open source'],
+    pros: ['Бесплатный', 'Хорошая производительность', 'Open source'],
+    cons: ['Не лидер рынка', 'Меньше интеграций'],
+    description: 'Мощная open-source модель от Alibaba. Хороший баланс производительности и доступности.',
+    website: 'https://qwenlm.ai',
+    icon: 'simple-icons:alibabadotcom',
+    badges: [],
+  },
+  {
+    id: 'kimi-k2',
+    name: 'Kimi K2',
+    company: 'Moonshot AI',
+    tier: 'A',
+    price: 'Free',
+    context: '256k',
+    bestFor: ['Research'],
+    pros: ['Хорошее качество', 'Большой контекст', 'Бесплатно'],
+    cons: ['Не всегда стабилен', 'Редко обновляется'],
+    description: 'Сильная бесплатная модель с огромным контекстом. Хороша для логики и алгоритмических задач.',
+    website: 'https://kimi.ai',
+    icon: 'K',
+    badges: [],
+  },
+  {
+    id: 'mistral-large',
+    name: 'Mistral Large',
+    company: 'Mistral AI',
+    tier: 'A',
+    price: 'Free/API',
+    context: '128k',
+    bestFor: ['General coding'],
+    pros: ['Быстрый', 'Европейский (GDPR)', 'Хороший API'],
+    cons: ['Уступает лидерам', 'Меньше экосистема'],
+    description: 'Европейская альтернатива с отличным API. Хороша, если важна приватность данных и GDPR.',
+    website: 'https://mistral.ai',
+    icon: 'simple-icons:mistral',
+    badges: [],
+  },
+  {
+    id: 'glm',
+    name: 'GLM',
+    company: 'Zhipu AI',
+    tier: 'A',
+    price: 'Free/API',
+    context: '128k',
+    bestFor: ['Open source'],
+    pros: ['Очень сильный среди open-source', 'Бесплатный API', 'Многоязычный'],
+    cons: ['Меньшая популярность', 'Меньше документации'],
+    description: 'Очень сильная open-source модель из Китая. Недооцененный игрок с отличными результатами.',
+    website: 'https://z.ai',
+    icon: 'Z',
+    badges: [],
+  },
+  {
+    id: 'gpt-4o',
+    name: 'GPT-4o',
+    company: 'OpenAI',
+    tier: 'A',
+    price: '$20',
+    context: '128k',
+    bestFor: ['General coding'],
+    pros: ['Универсальность', 'Быстрый', 'Отличная мультимодальность'],
+    cons: ['Уступает новым моделям', 'Ограниченный контекст'],
+    description: 'Универсальная модель для большинства задач. Хороший баланс скорости и качества.',
+    website: 'https://chatgpt.com',
+    icon: 'simple-icons:openai',
+    badges: [],
+  },
+  {
+    id: 'grok',
+    name: 'Grok',
+    company: 'xAI',
+    tier: 'A',
+    price: 'X Premium+',
+    context: '128k',
+    bestFor: ['Fast answers', 'Research'],
+    pros: ['Быстрый', 'Доступ к реальному времени', 'Минимальные ограничения'],
+    cons: ['Качество кода нестабильно', 'Требует подписку'],
+    description: 'Единственная модель с доступом к реальному времени через X. Хорош для ресёрча и новостей.',
+    website: 'https://grok.com',
+    icon: 'simple-icons:x',
+    badges: [],
+  },
+  {
+    id: 'llama-4',
+    name: 'Llama 4',
+    company: 'Meta',
+    tier: 'B',
+    price: 'Free',
+    context: '128k',
+    bestFor: ['Open source'],
+    pros: ['Open Source', 'Можно запустить локально', 'Большое сообщество'],
+    cons: ['Качество ниже лидеров', 'Требует мощного железа'],
+    description: 'Флагманская open-source модель от Meta. Отличный выбор для локального запуска и экспериментов.',
+    website: 'https://ai.meta.com',
+    icon: 'simple-icons:meta',
+    badges: [],
   },
 ]
 
-function CustomIcon({ letter, color }: { letter: string; color: string }) {
-  return (
-    <div
-      className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold"
-      style={{ backgroundColor: color + '20', color, border: `1px solid ${color}40` }}
-    >
-      {letter}
-    </div>
-  )
+// ============================
+// HELPERS
+// ============================
+
+const tierColor: Record<Tier, string> = {
+  'S+': '#f59e0b',
+  S: '#10b981',
+  A: '#3b82f6',
+  B: '#8b5cf6',
 }
 
-function ModelCard({ model, tierColor }: { model: AIModel; tierColor: string }) {
-  const [hovered, setHovered] = useState(false)
+const categoryIcons: Record<string, React.ReactNode> = {
+  Web: <Globe className="w-3 h-3" />,
+  Frontend: <Code2 className="w-3 h-3" />,
+  Backend: <Server className="w-3 h-3" />,
+  'Telegram Bots': <Bot className="w-3 h-3" />,
+  Web3: <Hexagon className="w-3 h-3" />,
+  Agents: <Brain className="w-3 h-3" />,
+  Debugging: <Bug className="w-3 h-3" />,
+  Architecture: <Crown className="w-3 h-3" />,
+  Reasoning: <Brain className="w-3 h-3" />,
+  'Long context': <Layers className="w-3 h-3" />,
+  'Large Projects': <Layers className="w-3 h-3" />,
+  'General coding': <Code2 className="w-3 h-3" />,
+  Brainstorming: <Brain className="w-3 h-3" />,
+  Speed: <Zap className="w-3 h-3" />,
+  'Complex tasks': <Brain className="w-3 h-3" />,
+  'Budget coding': <DollarSign className="w-3 h-3" />,
+  'Fast answers': <Zap className="w-3 h-3" />,
+  Research: <Brain className="w-3 h-3" />,
+  'Open source': <Code2 className="w-3 h-3" />,
+  Refactoring: <Code2 className="w-3 h-3" />,
+}
+
+// ============================
+// DIALOG COMPONENT
+// ============================
+
+function ModelDialog({ model, onClose }: { model: Model; onClose: () => void }) {
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', handleEsc)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', handleEsc)
+      document.body.style.overflow = ''
+    }
+  }, [onClose])
+
+  const color = tierColor[model.tier]
 
   return (
-    <a
-      href={model.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group relative block rounded-xl border border-border bg-card p-4 transition-all duration-300"
-      style={{
-        boxShadow: hovered ? `0 0 20px ${tierColor}20` : 'none',
-        borderColor: hovered ? `${tierColor}40` : undefined,
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      onClick={onClose}
     >
-      <div className="flex items-start gap-3">
-        <div className="shrink-0 mt-0.5">
-          {model.customIcon ? (
-            <CustomIcon letter={model.icon as string} color={tierColor} />
-          ) : (
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+
+      {/* Modal */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-border bg-card/90 backdrop-blur-xl shadow-2xl"
+        style={{ boxShadow: `0 0 60px ${color}15` }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header glow */}
+        <div
+          className="absolute top-0 left-0 right-0 h-32 rounded-t-2xl opacity-20 pointer-events-none"
+          style={{ background: `radial-gradient(ellipse at 50% 0%, ${color}40 0%, transparent 70%)` }}
+        />
+
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:bg-background transition-colors"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        <div className="relative p-6 sm:p-8">
+          {/* Header */}
+          <div className="flex items-start gap-4 mb-6">
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ backgroundColor: tierColor + '15' }}
+              className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0"
+              style={{ backgroundColor: color + '15', border: `1px solid ${color}30` }}
             >
-              <Icon
-                icon={model.icon as string}
-                className="w-5 h-5"
-                style={{ color: tierColor }}
-              />
+              {model.icon.length === 1 ? (
+                <span className="text-xl font-bold" style={{ color }}>
+                  {model.icon}
+                </span>
+              ) : (
+                <Icon icon={model.icon} className="w-7 h-7" style={{ color }} />
+              )}
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                <h2 className="text-xl font-bold tracking-tight">{model.name}</h2>
+                <span
+                  className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase"
+                  style={{ backgroundColor: color + '15', color, border: `1px solid ${color}30` }}
+                >
+                  {model.tier}
+                </span>
+              </div>
+              <p className="text-sm text-foreground/50">{model.company}</p>
+            </div>
+          </div>
+
+          {/* Badges */}
+          {model.badges.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-5">
+              {model.badges.map((badge) => (
+                <span
+                  key={badge}
+                  className="px-2.5 py-1 rounded-full text-[11px] font-medium border"
+                  style={{
+                    backgroundColor: color + '10',
+                    borderColor: color + '25',
+                    color: color + 'cc',
+                  }}
+                >
+                  {badge}
+                </span>
+              ))}
             </div>
           )}
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-semibold text-sm tracking-tight">{model.name}</h3>
-            <ExternalLink className="w-3 h-3 text-foreground/30 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+          {/* Description */}
+          <div className="mb-5">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground/40 mb-2">Описание</h3>
+            <p className="text-sm text-foreground/70 leading-relaxed">{model.description}</p>
           </div>
-          <p className="text-xs text-foreground/60 leading-relaxed mb-2">{model.description}</p>
-          <div className="flex items-center gap-1.5">
-            <Sparkles className="w-3 h-3" style={{ color: tierColor }} />
-            <span className="text-[11px] font-medium" style={{ color: tierColor }}>
-              {model.price}
-            </span>
+
+          {/* Price & Context */}
+          <div className="grid grid-cols-2 gap-3 mb-5">
+            <div className="rounded-lg border border-border/50 bg-background/50 p-3">
+              <p className="text-[10px] uppercase tracking-wider text-foreground/40 mb-1">Цена</p>
+              <p className="text-sm font-semibold">{model.price}</p>
+            </div>
+            <div className="rounded-lg border border-border/50 bg-background/50 p-3">
+              <p className="text-[10px] uppercase tracking-wider text-foreground/40 mb-1">Context Window</p>
+              <p className="text-sm font-semibold">{model.context}</p>
+            </div>
           </div>
+
+          {/* Best For */}
+          <div className="mb-5">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground/40 mb-2">Лучшее применение</h3>
+            <div className="flex flex-wrap gap-1.5">
+              {model.bestFor.map((item) => (
+                <span
+                  key={item}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] border border-border/50 bg-background/30"
+                >
+                  {categoryIcons[item] || <Star className="w-3 h-3" />}
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Pros */}
+          <div className="mb-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground/40 mb-2">Плюсы</h3>
+            <ul className="space-y-1.5">
+              {model.pros.map((pro, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-foreground/70">
+                  <Check className="w-3.5 h-3.5 mt-0.5 text-emerald-400 shrink-0" />
+                  {pro}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Cons */}
+          <div className="mb-6">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground/40 mb-2">Минусы</h3>
+            <ul className="space-y-1.5">
+              {model.cons.map((con, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-foreground/70">
+                  <XCircle className="w-3.5 h-3.5 mt-0.5 text-red-400 shrink-0" />
+                  {con}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Website button */}
+          <a
+            href={model.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg font-medium text-sm transition-all duration-200 hover:opacity-90"
+            style={{ backgroundColor: color, color: '#000' }}
+          >
+            <ExternalLink className="w-4 h-4" />
+            Visit Website
+          </a>
         </div>
-      </div>
-    </a>
+      </motion.div>
+    </motion.div>
   )
 }
 
-export default function AIToolsPage() {
+// ============================
+// MODEL CARD
+// ============================
+
+function ModelCard({ model, onClick }: { model: Model; onClick: () => void }) {
+  const [hovered, setHovered] = useState(false)
+  const color = tierColor[model.tier]
+
   return (
-    <div className="max-w-5xl mx-auto px-4 py-12">
+    <motion.button
+      layout
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="group relative w-full text-left rounded-xl border border-border bg-card/50 backdrop-blur-sm p-4 transition-all duration-300"
+      style={{
+        boxShadow: hovered ? `0 0 30px ${color}15, 0 4px 20px rgba(0,0,0,0.2)` : '0 2px 8px rgba(0,0,0,0.1)',
+        borderColor: hovered ? `${color}40` : undefined,
+      }}
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      {/* Glow background */}
+      <div
+        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ background: `radial-gradient(ellipse at 50% 0%, ${color}08 0%, transparent 70%)` }}
+      />
+
+      <div className="relative">
+        {/* Top row: icon + name + tier */}
+        <div className="flex items-start gap-3 mb-3">
+          <div
+            className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+            style={{ backgroundColor: color + '12', border: `1px solid ${color}20` }}
+          >
+            {model.icon.length === 1 ? (
+              <span className="text-sm font-bold" style={{ color }}>
+                {model.icon}
+              </span>
+            ) : (
+              <Icon icon={model.icon} className="w-5 h-5" style={{ color }} />
+            )}
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 mb-0.5">
+              <h3 className="font-semibold text-sm tracking-tight truncate">{model.name}</h3>
+              <span
+                className="px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase shrink-0"
+                style={{ backgroundColor: color + '15', color, border: `1px solid ${color}25` }}
+              >
+                {model.tier}
+              </span>
+            </div>
+            <p className="text-[11px] text-foreground/40">{model.company}</p>
+          </div>
+        </div>
+
+        {/* Badges */}
+        {model.badges.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-2.5">
+            {model.badges.slice(0, 2).map((badge) => (
+              <span
+                key={badge}
+                className="px-2 py-0.5 rounded-full text-[10px] font-medium border"
+                style={{
+                  backgroundColor: color + '08',
+                  borderColor: color + '20',
+                  color: color + 'bb',
+                }}
+              >
+                {badge}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Bottom row: price + context */}
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] text-foreground/50 font-medium">{model.price}</span>
+          <span className="text-foreground/20">·</span>
+          <span className="text-[11px] text-foreground/40">{model.context}</span>
+        </div>
+      </div>
+    </motion.button>
+  )
+}
+
+// ============================
+// MAIN PAGE
+// ============================
+
+export default function AIToolsPage() {
+  const [activeCategory, setActiveCategory] = useState('all')
+  const [selectedModel, setSelectedModel] = useState<Model | null>(null)
+
+  const filteredModels = useMemo(() => {
+    if (activeCategory === 'all') return models
+    if (activeCategory === 'free') return models.filter((m) => m.price.toLowerCase().includes('free'))
+    return models.filter((m) => m.bestFor.some((b) => b.toLowerCase().includes(activeCategory)))
+  }, [activeCategory])
+
+  const groupedByTier = useMemo(() => {
+    const grouped: Record<Tier, Model[]> = { 'S+': [], S: [], A: [], B: [] }
+    for (const model of filteredModels) {
+      grouped[model.tier].push(model)
+    }
+    return grouped
+  }, [filteredModels])
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-10 sm:py-12">
       <FadeInView>
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold tracking-tight mb-3">Тир-лист AI для кода</h1>
-          <p className="text-foreground/60 text-sm max-w-2xl">
-            Проверенные лично модели, ранжированные по полезности для разработки. Обновляется по мере выхода новых версий.
+        <div className="mb-8 sm:mb-10">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">AI Tier List</h1>
+          <p className="text-sm text-foreground/50 max-w-xl">
+            Ранжированные AI-модели для разработки. Проверены лично, обновляются по мере выхода новых версий.
           </p>
         </div>
       </FadeInView>
 
-      <div className="space-y-10">
-        {tiers.map((tier, tierIndex) => (
-          <FadeInView key={tier.label} delay={tierIndex * 0.1}>
-            <div className="relative">
-              {/* Tier header */}
-              <div className="flex items-center gap-3 mb-4">
-                <div
-                  className="px-3 py-1 rounded-md text-xs font-bold tracking-wider uppercase"
-                  style={{
-                    backgroundColor: tier.color + '15',
-                    color: tier.color,
-                    border: `1px solid ${tier.color}30`,
-                  }}
-                >
-                  {tier.label}
-                </div>
-                <div className="h-px flex-1" style={{ backgroundColor: tier.color + '15' }} />
-              </div>
+      {/* Category pills */}
+      <FadeInView delay={0.1}>
+        <div className="flex flex-wrap gap-1.5 mb-8 sm:mb-10">
+          {categories.map((cat) => {
+            const IconComp = cat.icon
+            const isActive = activeCategory === cat.id
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border"
+                style={{
+                  backgroundColor: isActive ? 'var(--accent)' : 'transparent',
+                  color: isActive ? '#000' : 'var(--foreground)',
+                  borderColor: isActive ? 'var(--accent)' : 'var(--border)',
+                  opacity: isActive ? 1 : 0.7,
+                }}
+              >
+                <IconComp className="w-3 h-3" />
+                {cat.label}
+              </button>
+            )
+          })}
+        </div>
+      </FadeInView>
 
-              {/* Models grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {tier.models.map((model) => (
-                  <ModelCard key={model.name} model={model} tierColor={tier.color} />
-                ))}
-              </div>
-            </div>
-          </FadeInView>
-        ))}
+      {/* Models by tier */}
+      <div className="space-y-8 sm:space-y-10">
+        {tierOrder.map(
+          (tier) =>
+            groupedByTier[tier].length > 0 && (
+              <FadeInView key={tier} delay={0.15}>
+                <div>
+                  {/* Tier header */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <div
+                      className="px-3 py-1 rounded-md text-xs font-bold tracking-wider uppercase"
+                      style={{
+                        backgroundColor: tierColor[tier] + '15',
+                        color: tierColor[tier],
+                        border: `1px solid ${tierColor[tier]}30`,
+                      }}
+                    >
+                      {tier}
+                    </div>
+                    <div
+                      className="h-px flex-1"
+                      style={{ backgroundColor: tierColor[tier] + '15' }}
+                    />
+                    <span className="text-[11px] text-foreground/30">
+                      {groupedByTier[tier].length} models
+                    </span>
+                  </div>
+
+                  {/* Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                    <AnimatePresence mode="popLayout">
+                      {groupedByTier[tier].map((model) => (
+                        <motion.div
+                          key={model.id}
+                          layout
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <ModelCard model={model} onClick={() => setSelectedModel(model)} />
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </FadeInView>
+            )
+        )}
       </div>
 
-      <FadeInView delay={0.5}>
+      {filteredModels.length === 0 && (
+        <div className="text-center py-16">
+          <p className="text-sm text-foreground/40">Нет моделей в этой категории</p>
+        </div>
+      )}
+
+      {/* Dialog */}
+      <AnimatePresence>
+        {selectedModel && (
+          <ModelDialog model={selectedModel} onClose={() => setSelectedModel(null)} />
+        )}
+      </AnimatePresence>
+
+      {/* Footer */}
+      <FadeInView delay={0.3}>
         <div className="mt-12 pt-6 border-t border-border">
-          <p className="text-xs text-foreground/40 text-center">
+          <p className="text-xs text-foreground/30 text-center">
             Цены актуальны на момент создания. Модели развиваются быстро — проверяйте актуальность на официальных сайтах.
           </p>
         </div>
