@@ -27,11 +27,11 @@ export default function HomePage() {
       updates: 'Постоянные обновления',
       popularSections: 'Популярные разделы',
       sections: [
-        { Icon: Brain, title: 'Тир-лист AI', description: 'Рейтинг лучших AI-инструментов для разработки', href: '/ai-tools' },
-        { Icon: BookOpen, title: 'Промпты', description: 'Готовые промпты для разных задач', href: '/prompts' },
-        { Icon: Code, title: 'Гайды', description: 'Подробные руководства и статьи', href: '/docs' },
-        { Icon: Layout, title: 'Сервисы', description: 'Сервисы для разработки и дизайна', href: '/services' },
-        { Icon: Leaf, title: 'Бесплатные ресурсы', description: 'Готовые стаки для разных проектов', href: '/free-steel' },
+        { Icon: Brain, title: 'Тир-лист AI', description: 'Рейтинг лучших AI-инструментов для разработки', href: '/ai-tools', count: '33 модели' },
+        { Icon: BookOpen, title: 'Промпты', description: 'Готовые промпты для разных задач', href: '/prompts', count: 'Скоро' },
+        { Icon: Code, title: 'Гайды', description: 'Подробные руководства и статьи', href: '/docs', count: 'Скоро' },
+        { Icon: Layout, title: 'Сервисы', description: 'Сервисы для разработки и дизайна', href: '/services', count: '5 сервисов' },
+        { Icon: Leaf, title: 'Бесплатные ресурсы', description: 'Готовые стаки для разных проектов', href: '/free-steel', count: 'Скоро' },
       ],
       view: 'Смотреть',
       remark: 'RixHub — твое место начала!',
@@ -53,11 +53,11 @@ export default function HomePage() {
       updates: 'Regular updates',
       popularSections: 'Popular sections',
       sections: [
-        { Icon: Brain, title: 'AI Tier List', description: 'Ranking of the best AI tools for development', href: '/ai-tools' },
-        { Icon: BookOpen, title: 'Prompts', description: 'Ready-made prompts for various tasks', href: '/prompts' },
-        { Icon: Code, title: 'Guides', description: 'Detailed guides and articles', href: '/docs' },
-        { Icon: Layout, title: 'Services', description: 'Services for development and design', href: '/services' },
-        { Icon: Leaf, title: 'Free Resources', description: 'Ready stacks for different projects', href: '/free-steel' },
+        { Icon: Brain, title: 'AI Tier List', description: 'Ranking of the best AI tools for development', href: '/ai-tools', count: '33 models' },
+        { Icon: BookOpen, title: 'Prompts', description: 'Ready-made prompts for various tasks', href: '/prompts', count: 'Coming soon' },
+        { Icon: Code, title: 'Guides', description: 'Detailed guides and articles', href: '/docs', count: 'Coming soon' },
+        { Icon: Layout, title: 'Services', description: 'Services for development and design', href: '/services', count: '5 services' },
+        { Icon: Leaf, title: 'Free Resources', description: 'Ready stacks for different projects', href: '/free-steel', count: 'Coming soon' },
       ],
       view: 'View',
       remark: 'RixHub — your place to start!',
@@ -170,6 +170,11 @@ export default function HomePage() {
                       <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs text-foreground/40 group-hover:text-foreground transition-colors font-pixel-mono">
                         {current.view} <ArrowRight className="w-3 h-3" />
                       </span>
+                      <div className="h-4 overflow-hidden">
+                        <span className="block text-[10px] text-accent/70 mt-1 font-medium opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                          {section.count}
+                        </span>
+                      </div>
                     </div>
                   </Link>
                 </FadeInView>
