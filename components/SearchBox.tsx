@@ -222,7 +222,6 @@ export default function SearchBox() {
 
   const getLangKey = (base: string, fallback: string = 'En') => {
     if (lang === 'ru') return base
-    if (lang === 'zh' || lang === 'ja') return `${base}${fallback}`
     return `${base}${fallback}`
   }
 
