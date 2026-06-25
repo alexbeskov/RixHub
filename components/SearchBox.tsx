@@ -170,6 +170,22 @@ const placeholders = {
     'Free resources...',
     'Claude, GPT, Gemini...',
   ],
+  zh: [
+    '查找AI模型...',
+    '搜索提示词...',
+    '编程指南...',
+    '开发服务...',
+    '免费资源...',
+    'Claude, GPT, Gemini...',
+  ],
+  ja: [
+    'AIモデルを検索...',
+    'プロンプトを検索...',
+    'コーディングガイド...',
+    '開発サービス...',
+    '無料リソース...',
+    'Claude, GPT, Gemini...',
+  ],
 }
 
 export default function SearchBox() {
@@ -220,18 +236,24 @@ export default function SearchBox() {
     return () => document.removeEventListener('keydown', handleKey)
   }, [isFocused])
 
+  const getLangKey = (base: string, fallback: string = 'En') => {
+    if (lang === 'ru') return base
+    if (lang === 'zh' || lang === 'ja') return `${base}${fallback}`
+    return `${base}${fallback}`
+  }
+
   const getResults = useCallback((): SearchItem[] => {
     if (!query.trim()) return []
     const q = query.toLowerCase().trim()
-    const langKey = lang === 'ru' ? 'title' : 'titleEn'
-    const descKey = lang === 'ru' ? 'description' : 'descriptionEn'
-    const tagsKey = lang === 'ru' ? 'tags' : 'tagsEn'
+    const langKey = getLangKey('title')
+    const descKey = getLangKey('description')
+    const tagsKey = getLangKey('tags')
 
     return searchIndex
       .filter((item) => {
-        const titleMatch = (item[langKey] as string).toLowerCase().includes(q)
-        const descMatch = (item[descKey] as string).toLowerCase().includes(q)
-        const tagMatch = (item[tagsKey] as string[]).some((t) => t.toLowerCase().includes(q))
+        const titleMatch = (item[langKey as keyof SearchItem] as string).toLowerCase().includes(q)
+        const descMatch = (item[descKey as keyof SearchItem] as string).toLowerCase().includes(q)
+        const tagMatch = (item[tagsKey as keyof SearchItem] as string[]).some((t) => t.toLowerCase().includes(q))
         return titleMatch || descMatch || tagMatch
       })
       .slice(0, 6)
@@ -289,8 +311,10 @@ export default function SearchBox() {
           {results.length > 0 ? (
             <div className="py-1">
               {results.map((item, index) => {
-                const title = lang === 'ru' ? item.title : item.titleEn
-                const description = lang === 'ru' ? item.description : item.descriptionEn
+                const titleKey = getLangKey('title')
+                const descKey = getLangKey('description')
+                const title = item[titleKey as keyof SearchItem] as string
+                const description = item[descKey as keyof SearchItem] as string
                 return (
                   <button
                     key={index}
