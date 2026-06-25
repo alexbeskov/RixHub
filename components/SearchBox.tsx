@@ -170,22 +170,6 @@ const placeholders = {
     'Free resources...',
     'Claude, GPT, Gemini...',
   ],
-  zh: [
-    '查找AI模型...',
-    '搜索提示词...',
-    '编程指南...',
-    '开发服务...',
-    '免费资源...',
-    'Claude, GPT, Gemini...',
-  ],
-  ja: [
-    'AIモデルを検索...',
-    'プロンプトを検索...',
-    'コーディングガイド...',
-    '開発サービス...',
-    '無料リソース...',
-    'Claude, GPT, Gemini...',
-  ],
 }
 
 export default function SearchBox() {

@@ -59,18 +59,6 @@ export default function Sidebar() {
       subscribeSuccess: '✓',
       subscribeError: '✗',
     },
-    zh: {
-      subscribeTitle: '更新',
-      emailPlaceholder: 'email...',
-      subscribeSuccess: '✓',
-      subscribeError: '✗',
-    },
-    ja: {
-      subscribeTitle: '更新',
-      emailPlaceholder: 'email...',
-      subscribeSuccess: '✓',
-      subscribeError: '✗',
-    },
   }
 
   const currentT = t[lang]

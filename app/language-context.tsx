@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 
-export type Lang = 'ru' | 'en' | 'zh' | 'ja'
+export type Lang = 'ru' | 'en'
 
 const LANG_KEY = 'rixhub-lang'
 const DEFAULT_LANG: Lang = 'ru'
@@ -23,7 +23,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = typeof window !== 'undefined' ? (localStorage.getItem(LANG_KEY) as Lang | null) : null
-    if (saved && ['ru', 'en', 'zh', 'ja'].includes(saved)) {
+    if (saved && ['ru', 'en'].includes(saved)) {
       setLangState(saved)
     }
     setHydrated(true)

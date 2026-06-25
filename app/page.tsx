@@ -15,7 +15,7 @@ export default function LandingPage() {
 
   const t = {
     ru: {
-      badge: 'Всё, что нужно для вайбкодинга',
+      badge: 'Всё для вайбкодинга',
       title: 'RixHub',
       subtitle: 'AI-инструменты, промпты и гайды для вайбкодеров',
       typewriter: 'Собрано с любовью для соло-билдеров и энтузиастов...',
@@ -25,11 +25,11 @@ export default function LandingPage() {
       updates: 'Постоянные обновления',
       footer: 'RixHub 2026',
       stats: { ai: 'AI инструментов', prompts: 'промптов', guides: 'гайдов' },
-      modalText: 'RixHub — был разработан мною лично для всех пользователей интернета, которые решили пойти в билдинг, веб 2 и веб 3 разработку. Пусть данный сайт будет служить вам как надежный инструмент которым можно пользоваться снова и снова.',
+      modalText: 'RixHub — был разработан мною лично для всех пользователей интернета, которые решили пойти в билдинг, веб 2 и веб 3 разработку. Пусть данный сайт будет служить вам как надёжный инструмент, которым можно пользоваться снова и снова.',
       closeBtn: 'Закрыть',
     },
     en: {
-      badge: 'Everything you need for vibe coding',
+      badge: 'Everything for vibe coding',
       title: 'RixHub',
       subtitle: 'AI tools, prompts and guides for vibe coders',
       typewriter: 'Built with love for solo builders and enthusiasts...',
@@ -41,34 +41,6 @@ export default function LandingPage() {
       stats: { ai: 'AI tools', prompts: 'prompts', guides: 'guides' },
       modalText: 'RixHub was developed personally by me for all internet users who decided to go into building, web 2 and web 3 development. May this site serve you as a reliable tool that you can use again and again.',
       closeBtn: 'Close',
-    },
-    zh: {
-      badge: '氛围编程所需的一切',
-      title: 'RixHub',
-      subtitle: 'AI工具、提示词和氛围编程指南',
-      typewriter: '为独立开发者和爱好者精心打造...',
-      description: '精选AI工具、现成提示词、指南和资源。',
-      primaryBtn: '开始',
-      secondaryBtn: '了解更多',
-      updates: '定期更新',
-      footer: 'RixHub 2026',
-      stats: { ai: 'AI工具', prompts: '提示词', guides: '指南' },
-      modalText: 'RixHub 是我个人为所有决定投身构建、Web 2 和 Web 3 开发的互联网用户而开发的。愿这个网站成为您可以反复使用的可靠工具。',
-      closeBtn: '关闭',
-    },
-    ja: {
-      badge: 'バイブコーディングに必要なすべて',
-      title: 'RixHub',
-      subtitle: 'AIツール、プロンプト、バイブコーダー向けガイド',
-      typewriter: 'ソロビルダーと愛好家のために愛を込めて作られました...',
-      description: '厳選されたAIツール、既成プロンプト、ガイドとリソース。',
-      primaryBtn: '始める',
-      secondaryBtn: '詳細',
-      updates: '定期更新',
-      footer: 'RixHub 2026',
-      stats: { ai: 'AIツール', prompts: 'プロンプト', guides: 'ガイド' },
-      modalText: 'RixHubは、ビルディング、Web 2およびWeb 3開発を始めようと決意したすべてのインターネットユーザー向けに私が個人的に開発しました。このサイトが、何度も使える信頼できるツールとして皆様に役立つことを願っています。',
-      closeBtn: '閉じる',
     },
   }
 
