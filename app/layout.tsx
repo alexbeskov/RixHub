@@ -9,7 +9,6 @@ import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
 import CursorDotRing from '@/components/CursorDotRing'
 import LayoutWrapper from '@/components/LayoutWrapper'
-import AnimatedBackground from '@/components/AnimatedBackground'
 
 const pressStart = Press_Start_2P({
   weight: '400',
@@ -37,7 +36,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           <CursorProvider>
             <SidebarProvider>
-              <AnimatedBackground />
               <CursorDotRing />
               <div className="relative z-10">
                 <Sidebar />
