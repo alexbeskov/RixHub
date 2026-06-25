@@ -4,21 +4,27 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import ThemeToggle from './ThemeToggle'
 import ThemeColorPicker from './ThemeColorPicker'
+import LanguageToggle from './LanguageToggle'
+import CursorToggle from './CursorToggle'
 import { Menu, X } from 'lucide-react'
+import { useLanguage } from '@/app/language-context'
 
 const navItems = [
-  { label: 'AI Tools', href: '/ai-tools' },
-  { label: 'Docs', href: '/docs' },
-  { label: 'Services', href: '/services' },
-  { label: 'Prompts', href: '/prompts' },
-  { label: 'Free Steel', href: '/free-steel' },
+  { label: 'AI Tools', labelRu: 'AI Инструменты', href: '/ai-tools' },
+  { label: 'Docs', labelRu: 'Документы', href: '/docs' },
+  { label: 'Services', labelRu: 'Сервисы', href: '/services' },
+  { label: 'Prompts', labelRu: 'Промпты', href: '/prompts' },
+  { label: 'Free Steel', labelRu: 'Бесплатно', href: '/free-steel' },
 ]
 
 export default function Navbar() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { lang } = useLanguage()
+
+  const menuLabel = lang === 'ru' ? 'Открыть меню' : 'Open menu'
+  const closeMenuLabel = lang === 'ru' ? 'Закрыть меню' : 'Close menu'
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[rgba(5,5,8,0.7)] backdrop-blur-xl border-b theme-border-subtle">
@@ -30,6 +36,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href
+            const label = lang === 'ru' ? (item.labelRu || item.label) : item.label
             return (
               <Link
                 key={item.href}
@@ -38,7 +45,7 @@ export default function Navbar() {
                   isActive ? 'text-white font-medium' : 'text-foreground/60 hover:text-white'
                 }`}
               >
-                {item.label}
+                {label}
                 {isActive && (
                   <span className="absolute bottom-0 left-3 right-3 h-px theme-accent-underline" />
                 )}
@@ -47,17 +54,19 @@ export default function Navbar() {
           })}
           <div className="ml-2 flex items-center gap-2">
             <ThemeColorPicker />
-            <ThemeToggle />
+            <LanguageToggle />
+            <CursorToggle />
           </div>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
           <ThemeColorPicker />
-          <ThemeToggle />
+          <LanguageToggle />
+          <CursorToggle />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="w-9 h-9 flex items-center justify-center rounded-md border border-border"
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? closeMenuLabel : menuLabel}
           >
             {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
@@ -75,6 +84,7 @@ export default function Navbar() {
             <div className="px-4 py-3 flex flex-col gap-1">
               {navItems.map((item) => {
                 const isActive = pathname === item.href
+                const label = lang === 'ru' ? (item.labelRu || item.label) : item.label
                 return (
                   <Link
                     key={item.href}
@@ -84,7 +94,7 @@ export default function Navbar() {
                       isActive ? 'theme-nav-active text-white font-medium' : 'text-foreground/60 hover:text-white theme-nav-hover'
                     }`}
                   >
-                    {item.label}
+                    {label}
                   </Link>
                 )
               })}

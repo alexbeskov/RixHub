@@ -1,8 +1,9 @@
 'use client'
 
 import SearchBox from './SearchBox'
-import ThemeSelector from './ThemeSelector'
+import ThemeColorPicker from './ThemeColorPicker'
 import LanguageToggle from './LanguageToggle'
+import CursorToggle from './CursorToggle'
 import { useLanguage } from '@/app/language-context'
 
 export default function Header() {
@@ -18,10 +19,9 @@ export default function Header() {
       </div>
 
       <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <ThemeColorPicker />
         <LanguageToggle />
-        <div className="hidden sm:block">
-          <ThemeSelector />
-        </div>
+        <CursorToggle />
       </div>
     </header>
   )

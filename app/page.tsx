@@ -5,8 +5,6 @@ import Link from 'next/link'
 import { ArrowRight, Zap, RefreshCw, X } from 'lucide-react'
 import FadeInView from '@/components/FadeInView'
 import TypewriterText from '@/components/TypewriterText'
-import LanguageToggle from '@/components/LanguageToggle'
-import ThemeSelector from '@/components/ThemeSelector'
 import { useLanguage } from '@/app/language-context'
 
 export default function LandingPage() {
@@ -27,6 +25,7 @@ export default function LandingPage() {
       stats: { ai: 'AI инструментов', prompts: 'промптов', guides: 'гайдов' },
       modalText: 'RixHub — был разработан мною лично для всех пользователей интернета, которые решили пойти в билдинг, веб 2 и веб 3 разработку. Пусть данный сайт будет служить вам как надёжный инструмент, которым можно пользоваться снова и снова.',
       closeBtn: 'Закрыть',
+      closeLabel: 'Закрыть',
     },
     en: {
       badge: 'Everything for vibe coding',
@@ -41,6 +40,7 @@ export default function LandingPage() {
       stats: { ai: 'AI tools', prompts: 'prompts', guides: 'guides' },
       modalText: 'RixHub was developed personally by me for all internet users who decided to go into building, web 2 and web 3 development. May this site serve you as a reliable tool that you can use again and again.',
       closeBtn: 'Close',
+      closeLabel: 'Close',
     },
   }
 
@@ -48,12 +48,6 @@ export default function LandingPage() {
 
   return (
     <div className="relative">
-      {/* Top-right controls */}
-      <div className="fixed top-4 right-4 sm:top-6 sm:right-6 z-50 flex items-center gap-2">
-        <LanguageToggle />
-        <ThemeSelector />
-      </div>
-
       {/* Hero */}
       <section className="min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 text-center relative">
         <FadeInView>
@@ -170,7 +164,7 @@ export default function LandingPage() {
             <button
               onClick={() => setModalOpen(false)}
               className="absolute top-3 right-3 sm:top-4 sm:right-4 p-1 rounded-full text-foreground/40 hover:text-foreground transition-colors"
-              aria-label="Close"
+              aria-label={current.closeLabel}
             >
               <X className="w-5 h-5" />
             </button>

@@ -3,16 +3,22 @@
 import { useCursor } from '@/app/cursor-context'
 import { motion } from 'framer-motion'
 import { Sparkles } from 'lucide-react'
+import { useLanguage } from '@/app/language-context'
 
 export default function CursorToggle() {
   const { enabled, toggle } = useCursor()
+  const { lang } = useLanguage()
+
+  const label = enabled
+    ? lang === 'ru' ? 'Выключить курсор' : 'Disable cursor'
+    : lang === 'ru' ? 'Включить курсор' : 'Enable cursor'
 
   return (
     <button
       onClick={toggle}
       className="w-9 h-9 flex items-center justify-center rounded-md border border-border hover:border-accent transition-colors duration-150"
-      aria-label={enabled ? 'Выключить подсветку' : 'Включить подсветку'}
-      title={enabled ? 'Выключить подсветку' : 'Включить подсветку'}
+      aria-label={label}
+      title={label}
     >
       <motion.div
         key={enabled ? 'on' : 'off'}

@@ -50,14 +50,24 @@ export default function Sidebar() {
     ru: {
       subscribeTitle: 'Обновления',
       emailPlaceholder: 'email...',
-      subscribeSuccess: '✓',
-      subscribeError: '✗',
+      subscribeSuccess: 'Подписано!',
+      subscribeError: 'Ошибка',
+      collapse: 'Свернуть',
+      expand: 'Развернуть',
+      toggleMenu: 'Открыть меню',
+      closeMenu: 'Закрыть меню',
+      subscribe: 'Подписаться',
     },
     en: {
       subscribeTitle: 'Updates',
       emailPlaceholder: 'email...',
-      subscribeSuccess: '✓',
-      subscribeError: '✗',
+      subscribeSuccess: 'Subscribed!',
+      subscribeError: 'Error',
+      collapse: 'Collapse',
+      expand: 'Expand',
+      toggleMenu: 'Toggle menu',
+      closeMenu: 'Close menu',
+      subscribe: 'Subscribe',
     },
   }
 
@@ -106,14 +116,14 @@ export default function Sidebar() {
         <button
           onClick={toggle}
           className="flex items-center gap-2 text-[10px] text-foreground/30 hover:text-foreground/60 transition-colors uppercase tracking-wider font-pixel-mono"
-          title={collapsed ? 'Развернуть' : 'Свернуть'}
+          title={collapsed ? currentT.expand : currentT.collapse}
         >
           {collapsed ? (
             <PanelRight className="w-4 h-4" />
           ) : (
             <>
               <PanelLeft className="w-3.5 h-3.5" />
-              <span className="hidden lg:inline">Свернуть</span>
+              <span className="hidden lg:inline">{currentT.collapse}</span>
             </>
           )}
         </button>
@@ -158,12 +168,12 @@ export default function Sidebar() {
             <p className="text-[10px] text-foreground/40 font-pixel-mono uppercase tracking-wider">{currentT.subscribeTitle}</p>
             {subscribeStatus === 'success' && (
               <span className="inline-flex items-center gap-1 text-[10px] text-green-500 font-medium">
-                <CheckCircle className="w-3 h-3" /> Подписано!
+                <CheckCircle className="w-3 h-3" /> {currentT.subscribeSuccess}
               </span>
             )}
             {subscribeStatus === 'error' && (
               <span className="inline-flex items-center gap-1 text-[10px] text-red-500 font-medium">
-                <XCircle className="w-3 h-3" /> Ошибка
+                <XCircle className="w-3 h-3" /> {currentT.subscribeError}
               </span>
             )}
           </div>
@@ -184,8 +194,8 @@ export default function Sidebar() {
               onClick={handleSubscribe}
               disabled={subscribing || !email.includes('@')}
               className="h-7 w-7 rounded bg-accent text-background flex items-center justify-center hover:opacity-90 transition-opacity disabled:opacity-30 shrink-0"
-              aria-label="Subscribe"
-              title="Subscribe"
+              aria-label={currentT.subscribe}
+              title={currentT.subscribe}
             >
               {subscribing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3" />}
             </button>
@@ -221,7 +231,7 @@ export default function Sidebar() {
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
         className="fixed top-3 left-3 z-[100] lg:hidden w-9 h-9 flex items-center justify-center rounded-md border border-border bg-card/90 backdrop-blur-sm"
-        aria-label="Toggle menu"
+        aria-label={mobileOpen ? currentT.closeMenu : currentT.toggleMenu}
       >
         {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
       </button>
