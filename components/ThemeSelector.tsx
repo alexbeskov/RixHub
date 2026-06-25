@@ -1,16 +1,45 @@
 import { useTheme } from 'next-themes'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Palette, Check, MousePointer2 } from 'lucide-react'
+import { Palette, Check, MousePointer2, Sun, Moon } from 'lucide-react'
 import { useCursor } from '@/app/cursor-context'
 
-const themes = [
-  { id: 'dota2', label: 'dota2', color: '#ff4444' },
-  { id: 'brezee', label: 'brezee', color: '#00d4aa' },
-  { id: 'VK', label: 'VK', color: '#4488ff' },
-  { id: 'binance', label: 'binance', color: '#fcd535' },
-  { id: 'DS', label: 'DS', color: '#a855f7' },
+const accentColors = [
+  { id: 'purple', label: 'Purple', color: '#a855f7' },
+  { id: 'red', label: 'Red', color: '#ef4444' },
+  { id: 'teal', label: 'Teal', color: '#14b8a6' },
+  { id: 'yellow', label: 'Yellow', color: '#eab308' },
+  { id: 'blue', label: 'Blue', color: '#3b82f6' },
 ]
+
+const legacyThemes = [
+  { id: 'dota2', label: 'Dota 2', color: '#ff4444' },
+  { id: 'brezee', label: 'Breeze', color: '#00d4aa' },
+  { id: 'VK', label: 'VK', color: '#4488ff' },
+  { id: 'binance', label: 'Binance', color: '#fcd535' },
+  { id: 'DS', label: 'Dark Soul', color: '#a855f7' },
+]
+
+function getAccentFromTheme(theme: string | undefined): string {
+  if (!theme) return 'purple'
+  if (theme.startsWith('light-')) return theme.replace('light-', '')
+  if (theme.startsWith('dark-')) return theme.replace('dark-', '')
+  if (theme === 'light') return 'purple'
+  if (theme === 'dark') return 'purple'
+  const legacyMap: Record<string, string> = {
+    dota2: 'red',
+    brezee: 'teal',
+    VK: 'blue',
+    binance: 'yellow',
+    DS: 'purple',
+  }
+  return legacyMap[theme] || 'purple'
+}
+
+function isLightTheme(theme: string | undefined): boolean {
+  if (!theme) return false
+  return theme.startsWith('light') || theme === 'light'
+}
 
 export default function ThemeSelector() {
   const { theme, setTheme } = useTheme()
@@ -21,6 +50,21 @@ export default function ThemeSelector() {
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  const currentAccent = getAccentFromTheme(theme)
+  const isLight = isLightTheme(theme)
+
+  const toggleLightDark = useCallback(() => {
+    const accent = getAccentFromTheme(theme)
+    setTheme(isLight ? `dark-${accent}` : `light-${accent}`)
+  }, [theme, isLight, setTheme])
+
+  const selectAccent = useCallback(
+    (accent: string) => {
+      setTheme(isLight ? `light-${accent}` : `dark-${accent}`)
+    },
+    [isLight, setTheme]
+  )
 
   if (!mounted) {
     return (
@@ -49,9 +93,53 @@ export default function ThemeSelector() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.95 }}
               transition={{ duration: 0.15 }}
-              className="absolute right-0 top-11 z-50 w-48 rounded-lg border border-border bg-card p-2 shadow-lg"
+              className="absolute right-0 top-11 z-50 w-52 rounded-lg border border-border bg-card p-2.5 shadow-lg"
             >
-              {themes.map((t) => (
+              {/* Light / Dark toggle */}
+              <div className="flex gap-1 mb-3">
+                <button
+                  onClick={() => !isLight && toggleLightDark()}
+                  className={`flex-1 flex items-center justify-center gap-1.5 rounded-md py-1.5 text-xs font-medium transition-colors ${
+                    !isLight
+                      ? 'bg-accent/10 text-accent border border-accent/20'
+                      : 'text-foreground/60 hover:text-foreground hover:bg-muted border border-transparent'
+                  }`}
+                >
+                  <Moon className="w-3.5 h-3.5" />
+                  Dark
+                </button>
+                <button
+                  onClick={() => isLight && toggleLightDark()}
+                  className={`flex-1 flex items-center justify-center gap-1.5 rounded-md py-1.5 text-xs font-medium transition-colors ${
+                    isLight
+                      ? 'bg-accent/10 text-accent border border-accent/20'
+                      : 'text-foreground/60 hover:text-foreground hover:bg-muted border border-transparent'
+                  }`}
+                >
+                  <Sun className="w-3.5 h-3.5" />
+                  Light
+                </button>
+              </div>
+
+              <p className="text-[10px] uppercase tracking-wider text-foreground/40 mb-1.5 px-0.5">Accent</p>
+              <div className="flex gap-1.5 mb-3">
+                {accentColors.map((a) => (
+                  <button
+                    key={a.id}
+                    onClick={() => selectAccent(a.id)}
+                    className={`w-7 h-7 rounded-full border-2 transition-all ${
+                      currentAccent === a.id ? 'border-foreground scale-110' : 'border-transparent hover:scale-105'
+                    }`}
+                    style={{ backgroundColor: a.color }}
+                    title={a.label}
+                    aria-label={a.label}
+                  />
+                ))}
+              </div>
+
+              <div className="my-1.5 border-t border-border" />
+              <p className="text-[10px] uppercase tracking-wider text-foreground/40 mb-1.5 px-0.5">Legacy</p>
+              {legacyThemes.map((t) => (
                 <button
                   key={t.id}
                   onClick={() => {
@@ -68,6 +156,7 @@ export default function ThemeSelector() {
                   {theme === t.id && <Check className="w-3.5 h-3.5" />}
                 </button>
               ))}
+
               <div className="my-1.5 border-t border-border" />
               <button
                 onClick={() => toggleCursor()}

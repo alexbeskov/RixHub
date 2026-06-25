@@ -37,6 +37,12 @@ export default function DashboardPage() {
       remark: 'RixHub — твое место начала!',
       footer: 'BY RixyHub 2026',
       marqueeItems: ['AI Tools', 'Prompts', 'Guides', 'Services', 'Free Resources', 'Vibe Coding', 'Solo Builders', 'Updates'],
+      featureStrip: [
+        { label: 'AI-powered', sub: 'Подборки' },
+        { label: 'Для кода', sub: 'Промпты' },
+        { label: 'Вайбкодинг', sub: 'Культура' },
+        { label: 'Быстрый старт', sub: 'Гайды' },
+      ],
     },
     en: {
       badge: 'Everything you need for vibe coding',
@@ -63,6 +69,74 @@ export default function DashboardPage() {
       remark: 'RixHub — your place to start!',
       footer: 'BY RixyHub 2026',
       marqueeItems: ['AI Tools', 'Prompts', 'Guides', 'Services', 'Free Resources', 'Vibe Coding', 'Solo Builders', 'Updates'],
+      featureStrip: [
+        { label: 'AI-powered', sub: 'Curation' },
+        { label: 'For coding', sub: 'Prompts' },
+        { label: 'Vibe coding', sub: 'Culture' },
+        { label: 'Quick start', sub: 'Guides' },
+      ],
+    },
+    zh: {
+      badge: '氛围编程所需的一切',
+      title: 'RixHub',
+      subtitle: 'AI工具、提示词和氛围编程指南',
+      typewriter: '为独立开发者和爱好者精心打造...',
+      description: '精选AI工具、现成提示词、指南和资源。',
+      stats: [
+        { label: 'AI工具', value: 100, Icon: Brain },
+        { label: '提示词', value: 500, Icon: Sparkles },
+        { label: '指南', value: 50, Icon: BookOpen },
+      ],
+      updates: '定期更新',
+      popularSections: '热门板块',
+      sections: [
+        { Icon: Brain, title: 'AI排行榜', description: '最佳AI开发工具排名', href: '/ai-tools', count: '33个模型' },
+        { Icon: BookOpen, title: '提示词', description: '各种任务的现成提示词', href: '/prompts', count: '即将推出' },
+        { Icon: Code, title: '指南', description: '详细教程和文章', href: '/docs', count: '即将推出' },
+        { Icon: Layout, title: '服务', description: '开发和设计服务', href: '/services', count: '5个服务' },
+        { Icon: Leaf, title: '免费资源', description: '不同项目的现成资源包', href: '/free-steel', count: '即将推出' },
+      ],
+      view: '查看',
+      remark: 'RixHub — 你的起点！',
+      footer: 'BY RixyHub 2026',
+      marqueeItems: ['AI工具', '提示词', '指南', '服务', '免费资源', '氛围编程', '独立开发者', '更新'],
+      featureStrip: [
+        { label: 'AI驱动', sub: '精选' },
+        { label: '编程用', sub: '提示词' },
+        { label: '氛围编程', sub: '文化' },
+        { label: '快速启动', sub: '指南' },
+      ],
+    },
+    ja: {
+      badge: 'バイブコーディングに必要なすべて',
+      title: 'RixHub',
+      subtitle: 'AIツール、プロンプト、バイブコーダー向けガイド',
+      typewriter: 'ソロビルダーと愛好家のために愛を込めて作られました...',
+      description: '厳選されたAIツール、既成プロンプト、ガイドとリソース。',
+      stats: [
+        { label: 'AIツール', value: 100, Icon: Brain },
+        { label: 'プロンプト', value: 500, Icon: Sparkles },
+        { label: 'ガイド', value: 50, Icon: BookOpen },
+      ],
+      updates: '定期更新',
+      popularSections: '人気セクション',
+      sections: [
+        { Icon: Brain, title: 'AIランキング', description: '開発向け最優秀AIツールランキング', href: '/ai-tools', count: '33モデル' },
+        { Icon: BookOpen, title: 'プロンプト', description: '様々なタスク用既成プロンプト', href: '/prompts', count: '近日公開' },
+        { Icon: Code, title: 'ガイド', description: '詳細なチュートリアルと記事', href: '/docs', count: '近日公開' },
+        { Icon: Layout, title: 'サービス', description: '開発とデザインサービス', href: '/services', count: '5サービス' },
+        { Icon: Leaf, title: '無料リソース', description: '様々なプロジェクト用スタック', href: '/free-steel', count: '近日公開' },
+      ],
+      view: '見る',
+      remark: 'RixHub — あなたの始まりの場所！',
+      footer: 'BY RixyHub 2026',
+      marqueeItems: ['AIツール', 'プロンプト', 'ガイド', 'サービス', '無料リソース', 'バイブコーディング', 'ソロビルダー', '更新'],
+      featureStrip: [
+        { label: 'AI搭載', sub: '厳選' },
+        { label: 'コーディング', sub: 'プロンプト' },
+        { label: 'バイブコーディング', sub: 'カルチャー' },
+        { label: 'クイックスタート', sub: 'ガイド' },
+      ],
     },
   }
 
@@ -188,13 +262,8 @@ export default function DashboardPage() {
       <FadeInView delay={0.2}>
         <section className="mb-8 sm:mb-10">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-            {[
-              { icon: Cpu, label: lang === 'ru' ? 'AI-powered' : 'AI-powered', sub: lang === 'ru' ? 'Подборки' : 'Curation' },
-              { icon: Terminal, label: lang === 'ru' ? 'Для кода' : 'For coding', sub: lang === 'ru' ? 'Промпты' : 'Prompts' },
-              { icon: Sparkles, label: lang === 'ru' ? 'Вайбкодинг' : 'Vibe coding', sub: lang === 'ru' ? 'Культура' : 'Culture' },
-              { icon: Rocket, label: lang === 'ru' ? 'Быстрый старт' : 'Quick start', sub: lang === 'ru' ? 'Гайды' : 'Guides' },
-            ].map((item, i) => {
-              const IconComp = item.icon
+            {current.featureStrip.map((item, i) => {
+              const IconComp = [Cpu, Terminal, Sparkles, Rocket][i]
               return (
                 <div key={i} className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg border border-border/50 bg-card/30 hover:bg-card/50 transition-colors">
                   <IconComp className="w-4 h-4 sm:w-5 sm:h-5 text-accent/70 shrink-0" />

@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { ArrowRight, Zap, RefreshCw, X } from 'lucide-react'
 import FadeInView from '@/components/FadeInView'
 import TypewriterText from '@/components/TypewriterText'
+import LanguageToggle from '@/components/LanguageToggle'
+import ThemeSelector from '@/components/ThemeSelector'
 import { useLanguage } from '@/app/language-context'
 
 export default function LandingPage() {
@@ -22,6 +24,7 @@ export default function LandingPage() {
       secondaryBtn: 'Подробнее',
       updates: 'Постоянные обновления',
       footer: 'RixHub 2026',
+      stats: { ai: 'AI инструментов', prompts: 'промптов', guides: 'гайдов' },
       modalText: 'RixHub — был разработан мною лично для всех пользователей интернета, которые решили пойти в билдинг, веб 2 и веб 3 разработку. Пусть данный сайт будет служить вам как надежный инструмент которым можно пользоваться снова и снова.',
       closeBtn: 'Закрыть',
     },
@@ -35,8 +38,37 @@ export default function LandingPage() {
       secondaryBtn: 'Learn More',
       updates: 'Regular updates',
       footer: 'RixHub 2026',
+      stats: { ai: 'AI tools', prompts: 'prompts', guides: 'guides' },
       modalText: 'RixHub was developed personally by me for all internet users who decided to go into building, web 2 and web 3 development. May this site serve you as a reliable tool that you can use again and again.',
       closeBtn: 'Close',
+    },
+    zh: {
+      badge: '氛围编程所需的一切',
+      title: 'RixHub',
+      subtitle: 'AI工具、提示词和氛围编程指南',
+      typewriter: '为独立开发者和爱好者精心打造...',
+      description: '精选AI工具、现成提示词、指南和资源。',
+      primaryBtn: '开始',
+      secondaryBtn: '了解更多',
+      updates: '定期更新',
+      footer: 'RixHub 2026',
+      stats: { ai: 'AI工具', prompts: '提示词', guides: '指南' },
+      modalText: 'RixHub 是我个人为所有决定投身构建、Web 2 和 Web 3 开发的互联网用户而开发的。愿这个网站成为您可以反复使用的可靠工具。',
+      closeBtn: '关闭',
+    },
+    ja: {
+      badge: 'バイブコーディングに必要なすべて',
+      title: 'RixHub',
+      subtitle: 'AIツール、プロンプト、バイブコーダー向けガイド',
+      typewriter: 'ソロビルダーと愛好家のために愛を込めて作られました...',
+      description: '厳選されたAIツール、既成プロンプト、ガイドとリソース。',
+      primaryBtn: '始める',
+      secondaryBtn: '詳細',
+      updates: '定期更新',
+      footer: 'RixHub 2026',
+      stats: { ai: 'AIツール', prompts: 'プロンプト', guides: 'ガイド' },
+      modalText: 'RixHubは、ビルディング、Web 2およびWeb 3開発を始めようと決意したすべてのインターネットユーザー向けに私が個人的に開発しました。このサイトが、何度も使える信頼できるツールとして皆様に役立つことを願っています。',
+      closeBtn: '閉じる',
     },
   }
 
@@ -44,6 +76,12 @@ export default function LandingPage() {
 
   return (
     <div className="relative">
+      {/* Top-right controls */}
+      <div className="fixed top-4 right-4 sm:top-6 sm:right-6 z-50 flex items-center gap-2">
+        <LanguageToggle />
+        <ThemeSelector />
+      </div>
+
       {/* Hero */}
       <section className="min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 text-center relative">
         <FadeInView>
@@ -70,7 +108,7 @@ export default function LandingPage() {
         </FadeInView>
 
         <FadeInView delay={0.1}>
-          <p className="text-lg sm:text-xl md:text-2xl text-gray-400 max-w-2xl mb-2 sm:mb-3 leading-relaxed">
+          <p className="text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-2xl mb-2 sm:mb-3 leading-relaxed">
             {current.subtitle}
           </p>
         </FadeInView>
@@ -81,14 +119,14 @@ export default function LandingPage() {
               text={current.typewriter}
               speed={45}
               delay={600}
-              className="text-sm sm:text-base text-gray-500"
+              className="text-sm sm:text-base text-foreground/50"
               showCursor={true}
             />
           </div>
         </FadeInView>
 
         <FadeInView delay={0.2}>
-          <p className="text-sm sm:text-base text-gray-500 max-w-xl mb-8 sm:mb-10">
+          <p className="text-sm sm:text-base text-foreground/50 max-w-xl mb-8 sm:mb-10">
             {current.description}
           </p>
         </FadeInView>
@@ -112,31 +150,31 @@ export default function LandingPage() {
         </FadeInView>
 
         <FadeInView delay={0.3}>
-          <div className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base text-gray-500 mb-12 sm:mb-16">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base text-foreground/50 mb-12 sm:mb-16">
             <span className="inline-flex items-center gap-1">
               <span className="font-semibold text-foreground">100+</span>
-              <span>AI {lang === 'ru' ? 'инструментов' : 'tools'}</span>
+              <span>{current.stats.ai}</span>
             </span>
-            <span className="text-gray-700 mx-1.5 sm:mx-2">·</span>
+            <span className="text-foreground/20 mx-1.5 sm:mx-2">·</span>
             <span className="inline-flex items-center gap-1">
               <span className="font-semibold text-foreground">500+</span>
-              <span>{lang === 'ru' ? 'промптов' : 'prompts'}</span>
+              <span>{current.stats.prompts}</span>
             </span>
-            <span className="text-gray-700 mx-1.5 sm:mx-2">·</span>
+            <span className="text-foreground/20 mx-1.5 sm:mx-2">·</span>
             <span className="inline-flex items-center gap-1">
               <span className="font-semibold text-foreground">50+</span>
-              <span>{lang === 'ru' ? 'гайдов' : 'guides'}</span>
+              <span>{current.stats.guides}</span>
             </span>
-            <span className="text-gray-700 mx-1.5 sm:mx-2">·</span>
+            <span className="text-foreground/20 mx-1.5 sm:mx-2">·</span>
             <span className="inline-flex items-center gap-1">
-              <RefreshCw className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-600" />
+              <RefreshCw className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-foreground/30" />
               {current.updates}
             </span>
           </div>
         </FadeInView>
 
         <FadeInView delay={0.35}>
-          <p className="text-[11px] sm:text-xs text-gray-600 tracking-[0.25em] uppercase">
+          <p className="text-[11px] sm:text-xs text-foreground/30 tracking-[0.25em] uppercase">
             {current.footer}
           </p>
         </FadeInView>
@@ -159,7 +197,7 @@ export default function LandingPage() {
           >
             <button
               onClick={() => setModalOpen(false)}
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 p-1 rounded-full text-gray-400 hover:text-white transition-colors"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 p-1 rounded-full text-foreground/40 hover:text-foreground transition-colors"
               aria-label="Close"
             >
               <X className="w-5 h-5" />
@@ -170,7 +208,7 @@ export default function LandingPage() {
             >
               RixHub
             </h2>
-            <p className="text-sm sm:text-base text-gray-300 leading-relaxed mb-6 sm:mb-8">
+            <p className="text-sm sm:text-base text-foreground/70 leading-relaxed mb-6 sm:mb-8">
               {current.modalText}
             </p>
             <button
