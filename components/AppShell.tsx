@@ -1,12 +1,20 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import { SidebarProvider } from '@/app/sidebar-context'
 import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
 import CursorDotRing from '@/components/CursorDotRing'
 import LayoutWrapper from '@/components/LayoutWrapper'
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function AppShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+  const isLanding = pathname === '/'
+
+  if (isLanding) {
+    return <>{children}</>
+  }
+
   return (
     <SidebarProvider>
       <CursorDotRing />

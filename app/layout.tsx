@@ -4,6 +4,7 @@ import { Press_Start_2P, VT323 } from 'next/font/google'
 import '../styles/globals.css'
 import Providers from './providers'
 import { CursorProvider } from './cursor-context'
+import AppShell from '@/components/AppShell'
 
 const pressStart = Press_Start_2P({
   weight: '400',
@@ -30,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${GeistSans.variable} ${pressStart.variable} ${vt323.variable} font-sans antialiased`}>
         <Providers>
           <CursorProvider>
-            {children}
+            <AppShell>{children}</AppShell>
           </CursorProvider>
         </Providers>
       </body>
