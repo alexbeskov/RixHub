@@ -29,9 +29,9 @@ export default function NeonLogo({ text, size = 'lg', className = '' }: NeonLogo
           0 0 ${7 * shadowIntensity}px #fff,
           0 0 ${10 * shadowIntensity}px #fff,
           0 0 ${21 * shadowIntensity}px #fff,
-          0 0 ${42 * shadowIntensity}px #a855f7,
-          0 0 ${82 * shadowIntensity}px #a855f7,
-          0 0 ${92 * shadowIntensity}px #a855f7
+          0 0 ${42 * shadowIntensity}px var(--accent),
+          0 0 ${82 * shadowIntensity}px var(--accent),
+          0 0 ${92 * shadowIntensity}px var(--accent)
         `,
       }}
     >

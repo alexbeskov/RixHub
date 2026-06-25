@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import ThemeToggle from './ThemeToggle'
+import ThemeColorPicker from './ThemeColorPicker'
 import { Menu, X } from 'lucide-react'
 
 const navItems = [
@@ -44,12 +45,14 @@ export default function Navbar() {
               </Link>
             )
           })}
-          <div className="ml-2">
+          <div className="ml-2 flex items-center gap-2">
+            <ThemeColorPicker />
             <ThemeToggle />
           </div>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
+          <ThemeColorPicker />
           <ThemeToggle />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}

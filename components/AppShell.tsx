@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { SidebarProvider } from '@/app/sidebar-context'
 import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
+import Navbar from '@/components/Navbar'
 import CursorDotRing from '@/components/CursorDotRing'
 import LayoutWrapper from '@/components/LayoutWrapper'
 
@@ -12,7 +13,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const isLanding = pathname === '/'
 
   if (isLanding) {
-    return <>{children}</>
+    return (
+      <>
+        <Navbar />
+        <div className="pt-14">{children}</div>
+      </>
+    )
   }
 
   return (
