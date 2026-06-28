@@ -1,10 +1,17 @@
 import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
+import { Inter } from 'next/font/google'
 import { Press_Start_2P, VT323 } from 'next/font/google'
 import '../styles/globals.css'
 import Providers from './providers'
 import { CursorProvider } from './cursor-context'
 import AppShell from '@/components/AppShell'
+
+const inter = Inter({
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-inter',
+  display: 'swap',
+})
 
 const pressStart = Press_Start_2P({
   weight: '400',
@@ -28,7 +35,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" suppressHydrationWarning>
-      <body className={`${GeistSans.variable} ${pressStart.variable} ${vt323.variable} font-sans antialiased`}>
+      <body className={`${GeistSans.variable} ${inter.variable} ${pressStart.variable} ${vt323.variable} font-sans antialiased`}>
         <Providers>
           <CursorProvider>
             <AppShell>{children}</AppShell>

@@ -4,9 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import ThemeColorPicker from './ThemeColorPicker'
 import LanguageToggle from './LanguageToggle'
-import CursorToggle from './CursorToggle'
 import { Menu, X } from 'lucide-react'
 import { useLanguage } from '@/app/language-context'
 
@@ -28,12 +26,12 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[rgba(5,5,8,0.7)] backdrop-blur-xl border-b theme-border-subtle">
-      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+      <div className="container-rix flex items-center justify-between h-14">
         <Link href="/" className="text-lg font-semibold tracking-tight text-foreground">
           RixHub
         </Link>
 
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden md:flex items-center gap-6">
           {navItems.map((item) => {
             const isActive = pathname === item.href
             const label = lang === 'ru' ? (item.labelRu || item.label) : item.label
@@ -41,28 +39,24 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative px-3 py-1.5 text-sm rounded-md transition-colors duration-150 ${
-                  isActive ? 'text-white font-medium' : 'text-foreground/60 hover:text-white'
+                className={`nav-link relative px-1 py-1.5 ${
+                  isActive ? 'text-foreground font-medium' : ''
                 }`}
               >
                 {label}
                 {isActive && (
-                  <span className="absolute bottom-0 left-3 right-3 h-px theme-accent-underline" />
+                  <span className="absolute bottom-0 left-0 right-0 h-px theme-accent-underline" />
                 )}
               </Link>
             )
           })}
-          <div className="ml-2 flex items-center gap-2">
-            <ThemeColorPicker />
+          <div className="flex items-center gap-2">
             <LanguageToggle />
-            <CursorToggle />
           </div>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
-          <ThemeColorPicker />
           <LanguageToggle />
-          <CursorToggle />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="w-9 h-9 flex items-center justify-center rounded-md border border-border"

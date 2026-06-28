@@ -49,14 +49,9 @@ export default function LandingPage() {
   return (
     <div className="relative">
       {/* Hero */}
-      <section className="min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 text-center relative">
+      <section className="min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 text-center relative landing-hero-bg">
         <FadeInView>
-          <span className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] sm:text-xs font-medium tracking-wide uppercase mb-6 sm:mb-8"
-            style={{
-              border: '1px solid var(--accent, rgba(255,255,255,0.08))',
-              background: 'var(--accent-bg, rgba(168,85,247,0.1))',
-              color: 'var(--accent)',
-            }}>
+          <span className="pill inline-flex items-center gap-2 px-3 py-1 text-[11px] sm:text-xs font-medium tracking-wide uppercase mb-6 sm:mb-8">
             <Zap className="w-3 h-3" />
             {current.badge}
           </span>
@@ -101,14 +96,14 @@ export default function LandingPage() {
           <div className="flex items-center gap-3 sm:gap-4 mb-8 sm:mb-10">
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-2.5 rounded-full px-6 sm:px-8 py-3 sm:py-3.5 text-sm sm:text-base font-medium bg-white text-black hover:bg-white/90 transition-colors"
+              className="btn-primary"
             >
               {current.primaryBtn}
               <ArrowRight className="w-4 h-4" />
             </Link>
             <button
               onClick={() => setModalOpen(true)}
-              className="inline-flex items-center gap-2.5 rounded-full px-6 sm:px-8 py-3 sm:py-3.5 text-sm sm:text-base font-medium border border-white/20 text-white hover:bg-white/5 transition-colors"
+              className="btn-secondary"
             >
               {current.secondaryBtn}
             </button>
@@ -179,7 +174,7 @@ export default function LandingPage() {
             </p>
             <button
               onClick={() => setModalOpen(false)}
-              className="inline-flex items-center rounded-full px-5 py-2.5 text-sm font-medium bg-white text-black hover:bg-white/90 transition-colors"
+              className="btn-primary"
             >
               {current.closeBtn}
             </button>
