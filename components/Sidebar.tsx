@@ -108,7 +108,7 @@ export default function Sidebar() {
       <div className={`px-4 pt-6 pb-4 ${collapsed ? 'flex justify-center' : ''}`}>
         <Link href="/" className={`flex items-center gap-2.5 group ${collapsed ? 'justify-center' : ''}`}>
           <RixHubLogo size={collapsed ? 22 : 26} className="shrink-0 group-hover:drop-shadow-[0_0_6px_rgba(34,231,196,0.6)] transition-all duration-300" />
-          {!collapsed && <span className="text-xl font-bold tracking-tight font-pixel">RixHub</span>}
+          {!collapsed && <span className="text-xl font-bold tracking-tight">RixHub</span>}
         </Link>
       </div>
 
@@ -116,7 +116,7 @@ export default function Sidebar() {
       <div className={`px-3 mb-2 flex items-center justify-between ${collapsed ? 'justify-center' : ''}`}>
         <button
           onClick={toggle}
-          className="flex items-center gap-2 text-[10px] text-foreground/30 hover:text-foreground/60 transition-colors uppercase tracking-wider font-pixel-mono"
+          className="flex items-center gap-2 text-[10px] text-foreground/30 hover:text-foreground/60 transition-colors uppercase tracking-wider"
           title={collapsed ? currentT.expand : currentT.collapse}
         >
           {collapsed ? (
@@ -167,7 +167,7 @@ export default function Sidebar() {
       {!collapsed && (
         <div className="px-3 py-3 mt-auto border-t border-border">
           <div className="flex items-center gap-1.5 mb-2">
-            <p className="text-[10px] text-foreground/40 font-pixel-mono uppercase tracking-wider">{currentT.subscribeTitle}</p>
+            <p className="text-[10px] text-foreground/40 uppercase tracking-wider">{currentT.subscribeTitle}</p>
             {subscribeStatus === 'success' && (
               <span className="inline-flex items-center gap-1 text-[10px] text-green-500 font-medium">
                 <CheckCircle className="w-3 h-3" /> {currentT.subscribeSuccess}

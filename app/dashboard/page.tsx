@@ -88,17 +88,17 @@ export default function DashboardPage() {
           <div className="absolute -bottom-4 -right-4 w-20 h-20 border-r border-b border-accent/20 pointer-events-none" />
 
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
-            <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 sm:px-3 py-1 text-[10px] sm:text-xs font-medium theme-badge font-pixel-mono">
+            <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 sm:px-3 py-1 text-[10px] sm:text-xs font-medium theme-badge">
               <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
               {current.badge}
             </span>
           </div>
 
-          <h1 className="font-pixel text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-3 sm:mb-4 pixel-glow">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-3 sm:mb-4">
             {current.title}
           </h1>
 
-          <p className="text-base sm:text-lg text-foreground/70 max-w-xl mb-1 sm:mb-2 font-pixel-mono">
+          <p className="text-base sm:text-lg text-foreground/70 max-w-xl mb-1 sm:mb-2">
             {current.subtitle}
           </p>
 
@@ -107,7 +107,7 @@ export default function DashboardPage() {
               text={current.typewriter}
               speed={50}
               delay={800}
-              className="text-xs sm:text-sm text-foreground/50 font-pixel-mono"
+              className="text-xs sm:text-sm text-foreground/50"
               showCursor={true}
             />
           </div>
@@ -123,7 +123,7 @@ export default function DashboardPage() {
               return (
                 <span key={stat.label} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs text-foreground/70 bg-card/50">
                   <IconComp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-foreground/50" />
-                  <CountUp end={stat.value} suffix="+" className="font-semibold text-foreground font-pixel-mono" />
+                  <CountUp end={stat.value} suffix="+" className="font-semibold text-foreground" />
                   <span>{stat.label}</span>
                 </span>
               )
@@ -139,7 +139,7 @@ export default function DashboardPage() {
       {/* Marquee Ticker */}
       <FadeInView delay={0.1}>
         <div className="mb-8 sm:mb-10 border-y border-border/50 py-2.5 sm:py-3 bg-card/20">
-          <MarqueeText speed={40} className="font-pixel-mono text-[10px] sm:text-xs text-foreground/30 uppercase tracking-widest">
+          <MarqueeText speed={40} className="text-[10px] sm:text-xs text-foreground/30 uppercase tracking-widest">
             {current.marqueeItems.map((item, i) => (
               <span key={i} className="flex items-center gap-2">
                 <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-accent/50" />
@@ -155,7 +155,7 @@ export default function DashboardPage() {
         <section className="mb-6 sm:mb-8">
           <div className="flex items-center gap-2 mb-4 sm:mb-5">
             <Terminal className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
-            <h2 className="text-sm sm:text-lg font-semibold font-pixel-mono">{current.popularSections}</h2>
+            <h2 className="text-sm sm:text-lg font-semibold">{current.popularSections}</h2>
             <div className="flex-1 h-px bg-border ml-2" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
@@ -177,7 +177,7 @@ export default function DashboardPage() {
                       </div>
                       <h3 className="text-sm sm:text-base font-semibold mb-1 group-hover:text-accent transition-colors">{section.title}</h3>
                       <p className="text-xs sm:text-sm text-foreground/60 mb-2 sm:mb-3">{section.description}</p>
-                      <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs text-foreground/40 group-hover:text-foreground transition-colors font-pixel-mono">
+                      <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs text-foreground/40 group-hover:text-foreground transition-colors">
                         {current.view} <ArrowRight className="w-3 h-3" />
                       </span>
                       <div className="h-4 overflow-hidden">
@@ -205,7 +205,7 @@ export default function DashboardPage() {
                   <IconComp className="w-4 h-4 sm:w-5 sm:h-5 text-accent/70 shrink-0" />
                   <div className="min-w-0">
                     <p className="text-[10px] sm:text-xs font-medium truncate">{item.label}</p>
-                    <p className="text-[9px] sm:text-[10px] text-foreground/40 font-pixel-mono">{item.sub}</p>
+                    <p className="text-[9px] sm:text-[10px] text-foreground/40">{item.sub}</p>
                   </div>
                 </div>
               )
@@ -220,14 +220,14 @@ export default function DashboardPage() {
           {/* Decorative elements */}
           <div className="absolute left-1/2 -translate-x-1/2 -top-8 w-px h-8 bg-gradient-to-b from-transparent to-accent/30" />
 
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4 animate-float">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
             <Rocket className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight font-pixel">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">
               {current.remark}
             </h2>
           </div>
           <div className="w-16 h-px bg-accent/30 mx-auto mb-6 sm:mb-8" />
-          <p className="text-[10px] sm:text-xs text-foreground/40 tracking-widest uppercase font-pixel-mono">
+          <p className="text-[10px] sm:text-xs text-foreground/40 tracking-widest uppercase">
             {current.footer}
           </p>
         </section>
