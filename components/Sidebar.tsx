@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Icon } from '@iconify/react'
 import RixHubLogo from './RixHubLogo'
+import LanguageToggle from './LanguageToggle'
 import {
   Home,
   Bot,
@@ -111,8 +112,8 @@ export default function Sidebar() {
         </Link>
       </div>
 
-      {/* Collapse button */}
-      <div className={`px-3 mb-2 ${collapsed ? 'flex justify-center' : ''}`}>
+      {/* Collapse button + Language toggle */}
+      <div className={`px-3 mb-2 flex items-center justify-between ${collapsed ? 'justify-center' : ''}`}>
         <button
           onClick={toggle}
           className="flex items-center gap-2 text-[10px] text-foreground/30 hover:text-foreground/60 transition-colors uppercase tracking-wider font-pixel-mono"
@@ -127,6 +128,7 @@ export default function Sidebar() {
             </>
           )}
         </button>
+        {!collapsed && <LanguageToggle />}
       </div>
 
       <nav className="flex-1 px-3 py-2 space-y-0.5">

@@ -282,7 +282,7 @@ export default function SearchBox() {
           </button>
         )}
         {!query && !isFocused && (
-          <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-foreground/20 font-pixel-mono hidden sm:inline">
+          <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-foreground/20 hidden sm:inline">
             /
           </span>
         )}
